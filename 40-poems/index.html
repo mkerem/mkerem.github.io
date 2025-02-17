@@ -18,7 +18,7 @@
             }
             
             .container {
-            min-height: 100vh;
+            min-height: 85vh;
             background-color: #065f46;
             padding: 1.5rem;
             display: flex;
@@ -40,11 +40,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 1rem; /* Reduced padding for mobile from 2 to 1*/
+            padding: 2rem;
         }
     
             .frame {
-                position: relative; /* changed from absolute to relative*/
+                position: absolute;
                 inset: 0;
                 pointer-events: none;
             }
@@ -60,7 +60,7 @@
             transform: translateY(0);
             transition: opacity 0.5s, transform 0.5s;
             max-width: 100%; /* Ensure text doesn't overflow */
-            padding: 0 1rem; /* Add padding for readability */
+            padding: 1rem; /* Add padding for readability */
         }
     
             .poem.transitioning {
@@ -119,7 +119,7 @@
                 padding: 0.5rem;
                 background-color: rgba(234, 179, 8, 0.1);
                 color: #eab308;
-                border: 0.5px solid rgba(234, 179, 8, 0.3);
+                border: 1px solid rgba(234, 179, 8, 0.3);
                 border-radius: 0.5rem;
                 transition: background-color 0.2s;
                 font-size: 1.25rem;
