@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Forty Poems</title>
+    <title>A Book of Poems</title>
     
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
@@ -28,6 +28,8 @@
         .book {
             width: 600px;
             height: 600px;
+            max-width: 95vw;
+            max-height: 95vw;
             background-color: #064e3b;
             border: 1px solid rgba(234, 179, 8, 0.2);
             border-radius: 0.5rem;
@@ -36,7 +38,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 4rem;
+            padding: 2rem;
         }
 
         .frame {
@@ -55,6 +57,8 @@
             opacity: 1;
             transform: translateY(0);
             transition: opacity 0.5s, transform 0.5s;
+            max-width: 100%;
+            padding: 0 1rem;
         }
 
         .poem.transitioning {
@@ -64,14 +68,14 @@
         
         .title {
             font-family: 'Montserrat', sans-serif;
-            font-size: 1.5rem;
+            font-size: clamp(1.25rem, 4vw, 1.5rem);
             margin-bottom: 1.5rem;
             color: #eab308;
             letter-spacing: 0.05em;
         }
         
         .content {
-            font-size: 1.125rem;
+            font-size: clamp(1rem, 3.5vw, 1.125rem);
             color: rgba(234, 179, 8, 0.9);
             white-space: pre-line;
             line-height: 1.75;
@@ -83,28 +87,15 @@
             align-items: center;
             gap: 1rem;
             margin-top: 2rem;
-        }
-        
-        .turn-page {
-            padding: 0.5rem 1.5rem;
-            background-color: rgba(234, 179, 8, 0.1);
-            color: #eab308;
-            border: 1px solid rgba(234, 179, 8, 0.3);
-            border-radius: 0.5rem;
-            transition: background-color 0.2s;
-            font-family: 'Poppins', sans-serif;
-            letter-spacing: 0.05em;
-            cursor: pointer;
-        }
-        
-        .turn-page:hover {
-            background-color: rgba(234, 179, 8, 0.2);
+            flex-wrap: wrap;
+            padding: 0 1rem;
         }
 
         .poem-links {
             display: flex;
             gap: 0.5rem;
             color: #eab308;
+            align-items: center;
         }
 
         .poem-links button {
@@ -115,6 +106,7 @@
             cursor: pointer;
             transition: color 0.2s;
             font-family: 'Poppins', sans-serif;
+            font-size: clamp(0.875rem, 3vw, 1rem);
         }
 
         .poem-links button:hover {
@@ -130,10 +122,65 @@
             transition: background-color 0.2s;
             font-size: 1.25rem;
             cursor: pointer;
+            min-width: 44px;
+            min-height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .cake-button:hover {
             background-color: rgba(234, 179, 8, 0.2);
+        }
+
+        .page-turn {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 48px;
+            height: 48px;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+
+        .page-turn:hover {
+            transform: scale(1.1);
+        }
+
+        .page-turn path {
+            transition: stroke 0.3s ease;
+        }
+
+        .page-turn:hover path {
+            stroke: #fcd34d;
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 1rem;
+            }
+
+            .book {
+                padding: 1rem;
+            }
+
+            .buttons {
+                gap: 0.5rem;
+            }
+
+            .page-turn {
+                bottom: 1rem;
+                right: 1rem;
+                width: 40px;
+                height: 40px;
+            }
+        }
+
+        @media (hover: none) {
+            .poem-links button, .cake-button {
+                min-height: 44px;
+                min-width: 44px;
+            }
         }
     </style>
 </head>
@@ -141,8 +188,8 @@
     <div class="container">
         <div class="book">
             <svg class="frame" viewBox="0 0 500 500">
-                <rect x="40" y="40" width="420" height="420" stroke-width="2" opacity="0.4" />
-                <rect x="50" y="50" width="400" height="400" stroke-width="1" opacity="0.3" />
+                <rect x="40" y="40" width="420" height="420" stroke="#eab308" stroke-width="2" opacity="0.4" />
+                <rect x="50" y="50" width="400" height="400" stroke="#eab308" stroke-width="1" opacity="0.3" />
                 <g opacity="0.4">
                     <path d="M 35 35 L 75 35 M 35 35 L 35 75" stroke="#eab308" fill="none" stroke-width="1"/>
                     <path d="M 465 35 L 425 35 M 465 35 L 465 75" stroke="#eab308" fill="none" stroke-width="1"/>
@@ -153,15 +200,14 @@
             
             <div class="poem">
                 <h2 class="title">The Gospel of GORGE</h2>
-                <p class="content">Some say <i>divine,</i> some say <i>grand</i>,
-We say <i>gorge</i> with a flourish of hand.
+                <p class="content">Some say "divine," some say "grand,"
+We say "gorge" with a flourish of hand.
 Gorge is a lifestyle, a mantra, a creed,
 A state of mind for those who succeed.</p>
             </div>
         </div>
 
         <div class="buttons">
-            <button class="turn-page" onclick="nextPoem()">Turn Page</button>
             <div class="poem-links">
                 <button onclick="goToPoem(2)">2</button>
                 <span>/</span>
@@ -171,6 +217,22 @@ A state of mind for those who succeed.</p>
             </div>
             <button class="cake-button" onclick="showBirthdayPoem()">🎂</button>
         </div>
+
+        <svg class="page-turn" viewBox="0 0 100 100" onclick="nextPoem()">
+            <path
+                d="M 20 80 Q 20 20, 80 20"
+                stroke="#eab308"
+                stroke-width="2"
+                fill="none"
+            />
+            <path
+                d="M 23 77 Q 23 23, 77 23"
+                stroke="#eab308"
+                stroke-width="1"
+                fill="none"
+                opacity="0.6"
+            />
+        </svg>
     </div>
 
     <script>
@@ -193,6 +255,146 @@ With a spray of lavender, calming the mind,
 Inhale the peace, leave stress behind.
 Fleur du Lavender, a mist so pure,
 Dreams flow freely, calm and sure.`
+            },
+            {
+                title: "Quantum Love Theory",
+                content: `Nathan said, "You must compute,"
+To date these men in their pursuit.
+Entangled once, then out of phase,
+Trapped in their simple linear maze.`
+            },
+            {
+                title: "Case Closed",
+                content: `We crack the code, we close the case,
+Another mystery falls from grace.
+One part logic, one part feel,
+We solve in heels—disco and steel.`
+            },
+            {
+                title: "The Weighted Blanket Theory",
+                content: `If a weighted blanket solves my past,
+That's gorge as fuck, I'll heal so fast.
+But trauma laughs—"You thought you won?"
+Nah, dude, we'll process… over a cinnamon bun.`
+            },
+            {
+                title: "Meekcia State of Mind",
+                content: `Meekcia reigns, no need to explain,
+Succinctly verbose, yet never mundane.`
+            },
+            {
+                title: "Witch or Badass Bitch",
+                content: `A pointed hat or a power stance,
+A spellbound gaze or a knowing glance.
+Thank goddess for friends with lashes and lace,
+Who conjure the look—then run the whole place.`
+            },
+            {
+                title: "The Future is Now (Or Maybe Later?)",
+                content: `The future is now, but also a haze,
+A Carnival fete or a workday craze.
+A love that sparks or texts that fade,
+A case not closed—just lightly delayed.`
+            },
+            {
+                title: "The Art of Being Succinctly Verbose",
+                content: `We keep it brief, yet somehow grand,
+A sentence stretches, hand in hand.
+We could say less—but why be terse?
+A Meekcia chat's a universe.`
+            },
+            {
+                title: "Not On the Menu",
+                content: `Dessert's not listed, but we don't mind,
+Some things in life you have to find.`
+            },
+            {
+                title: "Bird of Paradise",
+                content: `A bold bloom, a vibrant hue,
+Dacia's favorite, wild and true.`
+            },
+            {
+                title: "The Oyster and the Clue",
+                content: `Detective by night, philosopher by day,
+Solving the case, then drifting away.
+An oyster, a martini, a skyline so bright,
+A city that winks as we ghost into night.
+We question the stars, we question the sea,
+Yet all that matters is learning to be.`
+            },
+            {
+                title: "Be Here Now",
+                content: `Ram Dass said, "Be here now," so we say,
+"Do you understand?" …They'll get there one day.`
+            },
+            {
+                title: "The Pisces Tide",
+                content: `Dacia feels the waves before they break,
+Reads every heart, each bend, each ache.
+A mirror, a mystic, deep and wide,
+A Pisces pulled by the shifting tide.
+I stand on earth, firm and true,
+But she stays afloat, no matter what's due.`
+            },
+            {
+                title: "Arancino & Bombolino",
+                content: `Arancino, bombolino, a table set just right,
+We'll eat our way through every bite.`
+            },
+            {
+                title: "It Takes a Genius",
+                content: `It takes a genius to spot one, too,
+Which is why Meekcia always knew.`
+            },
+            {
+                title: "Third-Grade Solutions",
+                content: `They spiral deep, they complicate,
+We grab some glue and call it great.
+Not every fix needs something grand,
+Sometimes the answer's finger paint and sand.`
+            },
+            {
+                title: "ERGO",
+                content: `I seek, I strive, I plan, I stress—
+Or I could just chill… ergo, yes.`
+            },
+            {
+                title: "Many a Magic is Afoot",
+                content: `Signs and wonders, fate in play,
+Or just my sock gone MIA.`
+            },
+            {
+                title: "Amethyst Blessing",
+                content: `Amethyst glow, calm and bright,
+Soothing Dacia, bringing light.
+Healing power in every stone,
+Guiding her spirit, making her whole.`
+            },
+            {
+                title: "OVER",
+                content: `The State says speak, then say "over" to close—
+If only men knew how conversation goes.`
+            },
+            {
+                title: "Meekcia Magic",
+                content: `We speak in code, in jokes, in glance,
+A world that only we advance.
+No need to filter, no need to lie,
+Just one look, and it's clear why.`
+            },
+            {
+                title: "Summer Plans",
+                content: `NYC lights, Chicago's charm,
+Mexico City's sun on our arm.
+With friends by your side, adventures unfold,
+A summer to remember, bold and gold.`
+            },
+            {
+                title: "Dacia's Favorite People",
+                content: `Brilliant minds that shift and glide,
+Lillipad thoughts, no place to hide.
+They laugh at life, and choose to see,
+The humor in what's meant to be.`
             }
         ];
 
@@ -202,7 +404,6 @@ Dreams flow freely, calm and sure.`
 A life well-lived, a queen well-named.
 No dreams delayed, no path too steep,
 She moves with power, bold and deep.
-
 A mystic, a force, wild and free,
 Exactly where she's meant to be.`
         };
