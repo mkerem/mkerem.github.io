@@ -1,15 +1,13 @@
-# This is a simplified version, using just JavaScript
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Forty Poems</title>
-
+    
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
     
-    <!-- Styles -->
     <style>
         body {
             margin: 0;
@@ -40,9 +38,28 @@
             justify-content: center;
             padding: 4rem;
         }
-        
+
+        .frame {
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .frame rect {
+            stroke: #eab308;
+            fill: none;
+        }
+
         .poem {
             text-align: center;
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s, transform 0.5s;
+        }
+
+        .poem.transitioning {
+            opacity: 0;
+            transform: translateY(-1rem);
         }
         
         .title {
@@ -63,11 +80,12 @@
         .buttons {
             display: flex;
             justify-content: center;
+            align-items: center;
             gap: 1rem;
             margin-top: 2rem;
         }
         
-        button {
+        .turn-page {
             padding: 0.5rem 1.5rem;
             background-color: rgba(234, 179, 8, 0.1);
             color: #eab308;
@@ -75,50 +93,75 @@
             border-radius: 0.5rem;
             transition: background-color 0.2s;
             font-family: 'Poppins', sans-serif;
+            letter-spacing: 0.05em;
             cursor: pointer;
         }
         
-        button:hover {
+        .turn-page:hover {
             background-color: rgba(234, 179, 8, 0.2);
         }
-        
-        .cake-button {
-            padding: 0.5rem;
-            font-size: 1.25rem;
-        }
-        
+
         .poem-links {
             display: flex;
             gap: 0.5rem;
             color: #eab308;
         }
-        
+
         .poem-links button {
             background: none;
             border: none;
             padding: 0;
             color: #eab308;
+            cursor: pointer;
+            transition: color 0.2s;
+            font-family: 'Poppins', sans-serif;
         }
-        
+
         .poem-links button:hover {
             color: #fcd34d;
+        }
+        
+        .cake-button {
+            padding: 0.5rem;
+            background-color: rgba(234, 179, 8, 0.1);
+            color: #eab308;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            border-radius: 0.5rem;
+            transition: background-color 0.2s;
+            font-size: 1.25rem;
+            cursor: pointer;
+        }
+        
+        .cake-button:hover {
+            background-color: rgba(234, 179, 8, 0.2);
         }
     </style>
 </head>
 <body>
     <div class="container">
         <div class="book">
+            <svg class="frame" viewBox="0 0 500 500">
+                <rect x="40" y="40" width="420" height="420" stroke-width="2" opacity="0.4" />
+                <rect x="50" y="50" width="400" height="400" stroke-width="1" opacity="0.3" />
+                <g opacity="0.4">
+                    <path d="M 35 35 L 75 35 M 35 35 L 35 75" stroke="#eab308" fill="none" stroke-width="1"/>
+                    <path d="M 465 35 L 425 35 M 465 35 L 465 75" stroke="#eab308" fill="none" stroke-width="1"/>
+                    <path d="M 35 465 L 75 465 M 35 465 L 35 425" stroke="#eab308" fill="none" stroke-width="1"/>
+                    <path d="M 465 465 L 425 465 M 465 465 L 465 425" stroke="#eab308" fill="none" stroke-width="1"/>
+                </g>
+            </svg>
+            
             <div class="poem">
                 <h2 class="title">The Gospel of GORGE</h2>
-                <p class="content">Some say "divine," some say "grand,"
-We say "gorge" with a flourish of hand.
+                <p class="content">Some say <i>divine,</i> some say <i>grand</i>,
+We say <i>gorge</i> with a flourish of hand.
 Gorge is a lifestyle, a mantra, a creed,
 A state of mind for those who succeed.</p>
             </div>
         </div>
-        
+
         <div class="buttons">
-            <button onclick="nextPoem()">Turn Page</button>
+            <button class="turn-page" onclick="nextPoem()">Turn Page</button>
             <div class="poem-links">
                 <button onclick="goToPoem(2)">2</button>
                 <span>/</span>
@@ -164,8 +207,14 @@ Exactly where she's meant to be.`
         };
 
         function updatePoem(poem) {
-            document.querySelector('.title').textContent = poem.title;
-            document.querySelector('.content').textContent = poem.content;
+            const poemElement = document.querySelector('.poem');
+            poemElement.classList.add('transitioning');
+            
+            setTimeout(() => {
+                document.querySelector('.title').textContent = poem.title;
+                document.querySelector('.content').textContent = poem.content;
+                poemElement.classList.remove('transitioning');
+            }, 500);
         }
 
         function nextPoem() {
