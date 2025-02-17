@@ -28,8 +28,8 @@
         .book {
             width: 600px;
             height: 600px;
-            max-width: 95vw;
-            max-height: 95vw;
+            max-width: 90vw;
+            max-height: 90vw;
             background-color: #064e3b;
             border: 1px solid rgba(234, 179, 8, 0.2);
             border-radius: 0.5rem;
@@ -39,6 +39,7 @@
             align-items: center;
             justify-content: center;
             padding: 1rem;
+            overflow: hidden;
         }
 
         .frame {
@@ -57,9 +58,9 @@
             opacity: 1;
             transform: translateY(0);
             transition: opacity 0.5s, transform 0.5s;
-            max-width: 100%;
-            width: 100%;
-            padding: 0 0.5rem;
+            width: 85%;
+            max-width: 85%;
+            margin: 0 auto;
         }
 
         .poem.transitioning {
@@ -69,35 +70,16 @@
         
         .title {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(1rem, 3vw, 1.5rem);
+            font-size: clamp(0.875rem, 2.5vw, 1.5rem);
             margin-bottom: 1rem;
             color: #eab308;
             letter-spacing: 0.05em;
         }
-
-        .main-title {
-            font-family: 'Poppins', sans-serif;
-            color: #eab308;
-            font-size: clamp(0.875rem, 3vw, 1rem);
-            margin-bottom: 2rem;
-            letter-spacing: 0.05em;
-            opacity: 0.9;
-            gap: 0.5rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .main-title span {
-            color: #eab308;
-        }
-        
         .content {
-            font-size: clamp(0.875rem, 2.5vw, 1.125rem);
+            font-size: clamp(0.75rem, 2vw, 1.125rem);
             color: rgba(234, 179, 8, 0.9);
             white-space: pre-line;
-            line-height: 1.5;
-            padding: 0 0.5rem;
+            line-height: 1.4;
         }
         
         .buttons {
@@ -180,24 +162,26 @@
             }
 
             .book {
-                padding: 0.5rem;
-            }
-
-            .buttons {
-                gap: 0.5rem;
+                padding: 0.75rem;
+                max-width: 85vw;
+                max-height: 85vw;
             }
 
             .poem {
-                padding: 0 0.25rem;
+                width: 90%;
+                max-width: 90%;
             }
 
             .content {
-                padding: 0 0.25rem;
+                font-size: 0.75rem;
+                line-height: 1.3;
             }
 
             .title {
+                font-size: 0.875rem;
                 margin-bottom: 0.75rem;
             }
+        }
 
         @media (hover: none) {
             .poem-links button, .cake-button {
@@ -210,8 +194,7 @@
 <body>
     
     <div class="container">
-        <div class="main-title">Book of Poems</div>
-        
+
         <div class="book">
             <svg class="frame" viewBox="0 0 500 500">
                 <rect x="40" y="40" width="420" height="420" stroke="#eab308" stroke-width="2" opacity="0.4" />
@@ -226,8 +209,8 @@
             
             <div class="poem">
                 <h2 class="title">The Gospel of GORGE</h2>
-                <p class="content">Some say "divine," some say "grand,"
-We say "gorge" with a flourish of hand.
+                <p class="content">Some say "<i>divine</i>," some say "<i>grand</i>,"
+We say "<b>gorge</b>" with a flourish of hand.
 Gorge is a lifestyle, a mantra, a creed,
 A state of mind for those who succeed.</p>
             </div>
@@ -294,14 +277,14 @@ Trapped in their simple linear maze.`
                 content: `We crack the code, we close the case,
 Another mystery falls from grace.
 One part logic, one part feel,
-We solve in heels—disco and steel.`
+We solve in TJ Maxx boots—confidence and zeal.`
             },
             {
                 title: "The Weighted Blanket Theory",
                 content: `If a weighted blanket solves my past,
 That's gorge as fuck, I'll heal so fast.
 But trauma laughs—"You thought you won?"
-Nah, dude, we'll process… over a cinnamon bun.`
+Nah, dude, we'll process… over a donut, hun.`
             },
             {
                 title: "Meekcia State of Mind",
@@ -354,20 +337,6 @@ Yet all that matters is learning to be.`
 "Do you understand?" …They'll get there one day.`
             },
             {
-                title: "The Pisces Tide",
-                content: `Dacia feels the waves before they break,
-Reads every heart, each bend, each ache.
-A mirror, a mystic, deep and wide,
-A Pisces pulled by the shifting tide.
-I stand on earth, firm and true,
-But she stays afloat, no matter what's due.`
-            },
-            {
-                title: "Arancino & Bombolino",
-                content: `Arancino, bombolino, a table set just right,
-We'll eat our way through every bite.`
-            },
-            {
                 title: "It Takes a Genius",
                 content: `It takes a genius to spot one, too,
 Which is why Meekcia always knew.`
@@ -377,17 +346,26 @@ Which is why Meekcia always knew.`
                 content: `They spiral deep, they complicate,
 We grab some glue and call it great.
 Not every fix needs something grand,
-Sometimes the answer's finger paint and sand.`
+Sometimes the answer's just in hand.`
             },
             {
                 title: "ERGO",
                 content: `I seek, I strive, I plan, I stress—
-Or I could just chill… ergo, yes.`
+Or I could just chill… <b>ergo, yes</b>.`
             },
             {
-                title: "Many a Magic is Afoot",
-                content: `Signs and wonders, fate in play,
-Or just my sock gone MIA.`
+                title:"Spiritual Computer"
+                content:`Meeks runs on logic, sleek and refined,
+A spiritual computer, upgrading her mind.
+Dacia reminds her—feelings aren’t flaws,
+Some things in life don’t run on laws.`
+            },
+            {
+                title:"The Rainbow",
+                content:`We thought it was gone, just fading light,
+Then turned our heads—there, clear and bright.
+Life's like that too—just change your view,
+And what you seek comes into view.`
             },
             {
                 title: "Amethyst Blessing",
@@ -422,6 +400,69 @@ Lillipad thoughts, no place to hide.
 They laugh at life, and choose to see,
 The humor in what's meant to be.`
             }
+            {
+                title: "Many a Magic is Afoot",
+                content: `Signs and wonders, fate in play,
+Or just my sock gone MIA.`
+            },
+            {
+                title: "A Container",
+                content: `Hypervigilance or half asleep,
+Moving through life, but nothing runs deep.
+Performing, conforming, stuck on repeat,
+Nodding along, yet missing the beat.
+They call it normal, they call it fine,
+A script well-read, a pre-set line.
+But we want a life that spills past the brim,
+Not a container that cages us in.`
+            },
+            {
+                title: "Vibes + Values",
+                content: `Vibes alone? A fleeting thrill.
+Values, too? Now that’s the skill.
+But if a man has neither in sight,
+He’ll vanish like the morning light.`
+            },
+            {
+                title: "Wednesday Chats",
+                content: `Laughter, theories, a debrief in sync,
+No topic too small, no thought left to shrink.
+From genius to chaos, from petty to deep,
+Wednesday chats—where no secrets keep.`
+            },
+            {
+                title: "Wisdom Journal",
+                content: `Dacia’s journal, a treasure untold,
+Filled with wisdom, both soft and bold.
+Her friends flip through, finding the way,
+Guidance to carry, every day.`
+            },
+            {
+                title: "Smoothie Power",
+                content: `Tossed a date in the smoothie, no thought at all,
+Grinded it up, and watched it fall.
+Next thing we knew, we felt so bright—
+Superpowers? Damn, we took flight!
+
+Turns out the pit’s got some hidden spark,
+Now we’re unstoppable, ready to embark!`
+            },
+            {
+                title: "The Many C’s",
+                content: `Comedy first, then care, then ease,
+Comfort floats in on a Caribbean breeze.
+Connectivity, community, too—
+A life well-lived with a gorge-filled crew.`
+            },
+            {
+                title: "Cheers",
+                content: `A simple toast? Oh, not so near—
+Dacia demands a rhyme, my dear.
+Raise your glass, don’t be shy,
+Make it clever, make it fly!
+No lazy words, no clinking cheats,
+Only poetry when we meet.`
+            },
         ];
 
         const birthdayPoem = {
@@ -430,8 +471,9 @@ The humor in what's meant to be.`
 A life well-lived, a queen well-named.
 No dreams delayed, no path too steep,
 She moves with power, bold and deep.
+
 A mystic, a force, wild and free,
-Exactly where she's meant to be.`
+<b>Exactly where she's meant to be.</b>`
         };
 
         function updatePoem(poem) {
