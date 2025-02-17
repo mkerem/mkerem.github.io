@@ -2,16 +2,19 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
         <title>Forty Poems</title>
         
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
         
         <style>
-            body {
+            html, body {
                 margin: 0;
                 padding: 0;
                 font-family: 'Poppins', sans-serif;
+                width: 100%;
+                height: 100vh;
+                overflow: hidden;
             }
             
             .container {
@@ -478,7 +481,7 @@ No dreams delayed, no path too steep,
 She moves with power, bold and deep.
 
 A mystic, a force, wild and free,
-<b>Exactly where she's meant to be.</b>`
+Exactly where she's meant to be.`
         };
 
         function updatePoem(poem) {
@@ -507,6 +510,12 @@ A mystic, a force, wild and free,
             updatePoem(birthdayPoem);
             document.querySelector('.cake-button').style.display = 'none';
         }
+document.addEventListener("DOMContentLoaded", () => {
+    setTimeout(() => {
+        window.scrollTo(0, 1); // Scrolls down a tiny bit to hide the address bar
+    }, 100);
+});
+
     </script>
 </body>
 </html>
