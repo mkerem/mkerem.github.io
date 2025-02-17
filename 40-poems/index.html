@@ -1,3 +1,4 @@
+# This is a simplified test version of the book.
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,11 +10,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
 
     <!-- React and ReactDOM -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
 
-    <!-- Babel for JSX -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+    <!-- Babel -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -29,21 +30,35 @@
             }
         }
     </script>
-
-    <!-- Lucide Icons -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.263.1/umd/lucide.min.js"></script>
 </head>
 <body>
-    <div id="root"></div>
+    <div id="root">Loading...</div>
 
-    <!-- Your React Component -->
-    <script type="text/babel" src="PoemBook.jsx"></script>
-
-    <!-- Mount the React Component -->
+    <!-- Inline React Component for testing -->
     <script type="text/babel">
-        const rootElement = document.getElementById('root');
-        const root = ReactDOM.createRoot(rootElement);
-        root.render(<PoemBook />);
+        // Simple test component
+        const TestComponent = () => {
+            return (
+                <div className="min-h-screen bg-emerald-900 p-6 flex flex-col items-center justify-center">
+                    <h1 className="text-yellow-500 text-2xl font-montserrat">Test Component</h1>
+                </div>
+            );
+        };
+
+        // Mount with error handling
+        try {
+            const rootElement = document.getElementById('root');
+            if (!rootElement) {
+                console.error('Root element not found!');
+            } else {
+                const root = ReactDOM.createRoot(rootElement);
+                root.render(<TestComponent />);
+                console.log('Component mounted successfully');
+            }
+        } catch (error) {
+            console.error('Error mounting component:', error);
+            document.body.innerHTML += `<div style="color: white;">Error: ${error.message}</div>`;
+        }
     </script>
 </body>
 </html>
