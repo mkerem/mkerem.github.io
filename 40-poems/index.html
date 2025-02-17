@@ -2,19 +2,16 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
-
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Book of Poems</title>
         
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
         
         <style>
-            html, body {
+            body {
                 margin: 0;
                 padding: 0;
                 font-family: 'Poppins', sans-serif;
-                overflow: hidden;
-                display: flex;
             }
             
             .container {
@@ -33,19 +30,28 @@
             align-items: center;
         }
         .book {
-            width: 100%;
-          max-width: 100vw; /* Ensures it fits within the viewport width */
-         display: flex;
-        justify-content: center; /* Centers SVG */
-        align-items: center;
-        overflow: hidden;
+            width: 600px;
+            height: 600px;
+            max-width: 95vw; /* Responsive width */
+            max-height: 95vw; /* Keep it square */
+            background-color: #064e3b;
+            border: 1px solid rgba(234, 179, 8, 0.2);
+            border-radius: 0.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem; /* Reduced padding for mobile */
         }
     
-        .frame {
-    width: 90vw; /* Scales to viewport width */
-    max-width: 500px; /* Keeps it from becoming too large */
-    height: auto; /* Maintains aspect ratio */
-}
+            .frame {
+                position: absolute;
+                inset: 0;
+                pointer-events: none;
+                height: auto;
+                width: 100%;
+            }
     
             .frame rect {
                 stroke: #eab308;
@@ -198,12 +204,6 @@
                     min-width: 44px;
                 }
             }
-
-            @media screen and (max-width: 768px) {
-    .frame {
-        width: 95vw; /* Slightly larger scaling for smaller screens */
-    }
-}
         </style>
     </head>
 <body>
@@ -211,9 +211,9 @@
     <div class="container">
 
         <div class="book">
-            <svg class="frame" viewBox="0 0 500 500" preserveAspectRatio="xMinYMin meet">
-                <rect x="40" y="40" width="420" height="420" stroke="#eab308" stroke-width="2" opacity="0.4" />
-                <rect x="50" y="50" width="400" height="400" stroke="#eab308" stroke-width="1" opacity="0.3" />
+            <svg class="frame" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
+                <rect x="40" y="40" width="480" height="420" stroke="#eab308" stroke-width="2" opacity="0.4" />
+                <rect x="50" y="50" width="460" height="400" stroke="#eab308" stroke-width="1" opacity="0.3" />
                 <g opacity="0.4">
                     <path d="M 35 35 L 75 35 M 35 35 L 35 75" stroke="#eab308" fill="none" stroke-width="1"/>
                     <path d="M 465 35 L 425 35 M 465 35 L 465 75" stroke="#eab308" fill="none" stroke-width="1"/>
@@ -221,8 +221,6 @@
                     <path d="M 465 465 L 425 465 M 465 465 L 465 425" stroke="#eab308" fill="none" stroke-width="1"/>
                 </g>
             </svg>
-        </div>
-        
         
 
             <div class="poem">
@@ -526,27 +524,5 @@ Exactly where she's meant to be.`
             document.querySelector('.cake-button').style.display = 'none';
         }
     </script>
-
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        setTimeout(function() { 
-            window.scrollTo(0, 1); 
-        }, 100);
-    });
-    </script>
-
-<script>
-    document.addEventListener("click", function() {
-        if (document.documentElement.requestFullscreen) {
-            document.documentElement.requestFullscreen();
-        } else if (document.documentElement.webkitRequestFullscreen) { /* Safari */
-            document.documentElement.webkitRequestFullscreen();
-        } else if (document.documentElement.msRequestFullscreen) { /* IE */
-            document.documentElement.msRequestFullscreen();
-        }
-    });
-    </script>
-    
-    
 </body>
 </html>
