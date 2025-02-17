@@ -38,7 +38,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 1rem;
         }
 
         .frame {
@@ -58,7 +58,8 @@
             transform: translateY(0);
             transition: opacity 0.5s, transform 0.5s;
             max-width: 100%;
-            padding: 0 1rem;
+            width: 100%;
+            padding: 0 0.5rem;
         }
 
         .poem.transitioning {
@@ -68,17 +69,18 @@
         
         .title {
             font-family: 'Montserrat', sans-serif;
-            font-size: clamp(1.25rem, 4vw, 1.5rem);
-            margin-bottom: 1.5rem;
+            font-size: clamp(1rem, 3vw, 1.5rem);
+            margin-bottom: 1rem;
             color: #eab308;
             letter-spacing: 0.05em;
         }
         
         .content {
-            font-size: clamp(1rem, 3.5vw, 1.125rem);
+            font-size: clamp(0.875rem, 2.5vw, 1.125rem);
             color: rgba(234, 179, 8, 0.9);
             white-space: pre-line;
-            line-height: 1.75;
+            line-height: 1.5;
+            padding: 0 0.5rem;
         }
         
         .buttons {
@@ -157,24 +159,28 @@
 
         @media (max-width: 480px) {
             .container {
-                padding: 1rem;
+                padding: 0.5rem;
             }
 
             .book {
-                padding: 1rem;
+                padding: 0.5rem;
             }
 
             .buttons {
                 gap: 0.5rem;
             }
 
-            .page-turn {
-                bottom: 1rem;
-                right: 1rem;
-                width: 40px;
-                height: 40px;
+            .poem {
+                padding: 0 0.25rem;
             }
-        }
+
+            .content {
+                padding: 0 0.25rem;
+            }
+
+            .title {
+                margin-bottom: 0.75rem;
+            }
 
         @media (hover: none) {
             .poem-links button, .cake-button {
