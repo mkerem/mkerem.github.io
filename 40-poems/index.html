@@ -1,4 +1,4 @@
-# This is a simplified test version of the book.
+# This is a simplified version, using just JavaScript
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,56 +8,180 @@
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
-
-    <!-- React and ReactDOM -->
-    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
-
-    <!-- Babel -->
-    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
-
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        montserrat: ['Montserrat', 'sans-serif'],
-                        poppins: ['Poppins', 'sans-serif'],
-                    },
-                }
-            }
+    
+    <!-- Styles -->
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
         }
-    </script>
+        
+        .container {
+            min-height: 100vh;
+            background-color: #065f46;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .book {
+            width: 600px;
+            height: 600px;
+            background-color: #064e3b;
+            border: 1px solid rgba(234, 179, 8, 0.2);
+            border-radius: 0.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+        }
+        
+        .poem {
+            text-align: center;
+        }
+        
+        .title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #eab308;
+            letter-spacing: 0.05em;
+        }
+        
+        .content {
+            font-size: 1.125rem;
+            color: rgba(234, 179, 8, 0.9);
+            white-space: pre-line;
+            line-height: 1.75;
+        }
+        
+        .buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        button {
+            padding: 0.5rem 1.5rem;
+            background-color: rgba(234, 179, 8, 0.1);
+            color: #eab308;
+            border: 1px solid rgba(234, 179, 8, 0.3);
+            border-radius: 0.5rem;
+            transition: background-color 0.2s;
+            font-family: 'Poppins', sans-serif;
+            cursor: pointer;
+        }
+        
+        button:hover {
+            background-color: rgba(234, 179, 8, 0.2);
+        }
+        
+        .cake-button {
+            padding: 0.5rem;
+            font-size: 1.25rem;
+        }
+        
+        .poem-links {
+            display: flex;
+            gap: 0.5rem;
+            color: #eab308;
+        }
+        
+        .poem-links button {
+            background: none;
+            border: none;
+            padding: 0;
+            color: #eab308;
+        }
+        
+        .poem-links button:hover {
+            color: #fcd34d;
+        }
+    </style>
 </head>
 <body>
-    <div id="root">Loading...</div>
+    <div class="container">
+        <div class="book">
+            <div class="poem">
+                <h2 class="title">The Gospel of GORGE</h2>
+                <p class="content">Some say "divine," some say "grand,"
+We say "gorge" with a flourish of hand.
+Gorge is a lifestyle, a mantra, a creed,
+A state of mind for those who succeed.</p>
+            </div>
+        </div>
+        
+        <div class="buttons">
+            <button onclick="nextPoem()">Turn Page</button>
+            <div class="poem-links">
+                <button onclick="goToPoem(2)">2</button>
+                <span>/</span>
+                <button onclick="goToPoem(20)">20</button>
+                <span>/</span>
+                <button onclick="goToPoem(25)">25</button>
+            </div>
+            <button class="cake-button" onclick="showBirthdayPoem()">🎂</button>
+        </div>
+    </div>
 
-    <!-- Inline React Component for testing -->
-    <script type="text/babel">
-        // Simple test component
-        const TestComponent = () => {
-            return (
-                <div className="min-h-screen bg-emerald-900 p-6 flex flex-col items-center justify-center">
-                    <h1 className="text-yellow-500 text-2xl font-montserrat">Test Component</h1>
-                </div>
-            );
+    <script>
+        const poems = [
+            {
+                title: "The Gospel of GORGE",
+                content: `Some say "divine," some say "grand,"
+We say "gorge" with a flourish of hand.
+Gorge is a lifestyle, a mantra, a creed,
+A state of mind for those who succeed.`
+            },
+            {
+                title: "No Dreams Are Off Any Tables",
+                content: `No dream too wild, no path too steep,
+No thought too vast for us to keep.
+You stack them high—why play it small?
+Move to Europe, build it all.
+
+With a spray of lavender, calming the mind,
+Inhale the peace, leave stress behind.
+Fleur du Lavender, a mist so pure,
+Dreams flow freely, calm and sure.`
+            }
+        ];
+
+        const birthdayPoem = {
+            title: "Forty",
+            content: `Dacia at forty—strong, untamed,
+A life well-lived, a queen well-named.
+No dreams delayed, no path too steep,
+She moves with power, bold and deep.
+A mystic, a force, wild and free,
+Exactly where she's meant to be.`
         };
 
-        // Mount with error handling
-        try {
-            const rootElement = document.getElementById('root');
-            if (!rootElement) {
-                console.error('Root element not found!');
-            } else {
-                const root = ReactDOM.createRoot(rootElement);
-                root.render(<TestComponent />);
-                console.log('Component mounted successfully');
+        function updatePoem(poem) {
+            document.querySelector('.title').textContent = poem.title;
+            document.querySelector('.content').textContent = poem.content;
+        }
+
+        function nextPoem() {
+            const randomIndex = Math.floor(Math.random() * poems.length);
+            updatePoem(poems[randomIndex]);
+        }
+
+        function goToPoem(number) {
+            if (poems[number - 1]) {
+                updatePoem(poems[number - 1]);
             }
-        } catch (error) {
-            console.error('Error mounting component:', error);
-            document.body.innerHTML += `<div style="color: white;">Error: ${error.message}</div>`;
+        }
+
+        function showBirthdayPoem() {
+            updatePoem(birthdayPoem);
+            document.querySelector('.cake-button').style.display = 'none';
         }
     </script>
 </body>
