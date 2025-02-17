@@ -74,6 +74,23 @@
             color: #eab308;
             letter-spacing: 0.05em;
         }
+
+        .main-title {
+            font-family: 'Poppins', sans-serif;
+            color: #eab308;
+            font-size: clamp(0.875rem, 3vw, 1rem);
+            margin-bottom: 2rem;
+            letter-spacing: 0.05em;
+            opacity: 0.9;
+            gap: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .main-title span {
+            color: #eab308;
+        }
         
         .content {
             font-size: clamp(0.875rem, 2.5vw, 1.125rem);
@@ -191,7 +208,10 @@
     </style>
 </head>
 <body>
+    
     <div class="container">
+        <div class="main-title">Book of Poems</div>
+        
         <div class="book">
             <svg class="frame" viewBox="0 0 500 500">
                 <rect x="40" y="40" width="420" height="420" stroke="#eab308" stroke-width="2" opacity="0.4" />
