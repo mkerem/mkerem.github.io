@@ -15,44 +15,30 @@
             }
             
             .container {
-                min-height: 100vh;
-                background-color: #065f46;
-                padding: 1.5rem;
-                display: flex;
-                flex-direction: column;
-                align-items: center;
-                justify-content: center;
-            }
-    
-            .main-title {
-                font-family: 'Poppins', sans-serif;
-                color: #eab308;
-                font-size: clamp(0.875rem, 3vw, 1rem);
-                margin-bottom: 2rem;
-                letter-spacing: 0.05em;
-                opacity: 0.9;
-                gap: 0.5rem;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-            }
-            
-            .book {
-                width: 600px;
-                height: 600px;
-                max-width: 90vw;
-                max-height: 90vw;
-                background-color: #064e3b;
-                border: 1px solid rgba(234, 179, 8, 0.2);
-                border-radius: 0.5rem;
-                box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-                position: relative;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                padding: 2rem;
-                overflow: hidden;
-            }
+            min-height: 100vh;
+            background-color: #065f46;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .book {
+            width: 600px;
+            height: 600px;
+            max-width: 95vw; /* Responsive width */
+            max-height: 95vw; /* Keep it square */
+            background-color: #064e3b;
+            border: 1px solid rgba(234, 179, 8, 0.2);
+            border-radius: 0.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem; /* Reduced padding for mobile */
+        }
     
             .frame {
                 position: absolute;
@@ -66,14 +52,13 @@
             }
     
             .poem {
-                text-align: center;
-                opacity: 1;
-                transform: translateY(0);
-                transition: opacity 0.5s, transform 0.5s;
-                width: 85%;
-                max-width: 85%;
-                margin: 0 auto;
-            }
+            text-align: center;
+            opacity: 1;
+            transform: translateY(0);
+            transition: opacity 0.5s, transform 0.5s;
+            max-width: 100%; /* Ensure text doesn't overflow */
+            padding: 0 1rem; /* Add padding for readability */
+        }
     
             .poem.transitioning {
                 opacity: 0;
@@ -171,11 +156,11 @@
     
             @media (max-width: 480px) {
                 .container {
-                    padding: 0.5rem;
+                    padding: 1rem;
                 }
     
                 .book {
-                    padding: 1.5rem;
+                    padding: 1rem;
                     max-width: 85vw;
                     max-height: 85vw;
                 }
@@ -191,7 +176,7 @@
                 }
     
                 .title {
-                    font-size: 1rem;
+                    font-size: 1.5rem;
                     margin-bottom: 1.25rem;
                 }
     
