@@ -2,8 +2,8 @@
 <html lang="en">
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-        <title>Forty Poems</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Book of Poems</title>
         
         <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
         
@@ -12,9 +12,6 @@
                 margin: 0;
                 padding: 0;
                 font-family: 'Poppins', sans-serif;
-                width: 100%;
-                height: 100vh;
-                overflow: hidden;
             }
             
             .container {
@@ -25,7 +22,6 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            width: 100%;
         }
 
         .book {
@@ -41,11 +37,11 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 2rem;
+            padding: 2rem; /* Reduced padding for mobile */
         }
     
             .frame {
-                position: absolute; /* changed from absolute to relative*/
+                position: absolute;
                 inset: 0;
                 pointer-events: none;
             }
@@ -61,7 +57,7 @@
             transform: translateY(0);
             transition: opacity 0.5s, transform 0.5s;
             max-width: 100%; /* Ensure text doesn't overflow */
-            padding: 1rem; /* Add padding for readability */
+            padding: 0 1rem; /* Add padding for readability */
         }
     
             .poem.transitioning {
@@ -420,6 +416,7 @@ Or just my sock gone MIA.`
 Moving through life, but nothing runs deep.
 Performing, conforming, stuck on repeat,
 Nodding along, yet missing the beat.
+
 They call it normal, they call it fine,
 A script well-read, a pre-set line.
 But we want a life that spills past the brim,
@@ -469,6 +466,7 @@ A life well-lived with a gorge-filled crew.`
 Dacia demands a rhyme, my dear.
 Raise your glass, don't be shy,
 Make it clever, make it fly!
+
 No lazy words, no clinking cheats,
 Only poetry when we meet.`
             },
@@ -511,12 +509,6 @@ Exactly where she's meant to be.`
             updatePoem(birthdayPoem);
             document.querySelector('.cake-button').style.display = 'none';
         }
-document.addEventListener("DOMContentLoaded", () => {
-    setTimeout(() => {
-        window.scrollTo(0, 1); // Scrolls down a tiny bit to hide the address bar
-    }, 100);
-});
-
     </script>
 </body>
 </html>
