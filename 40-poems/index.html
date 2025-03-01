@@ -5,67 +5,103 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <title>Book of Poems</title>
         
-        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
         
         <style>
+            :root {
+                --book-bg: #064e3b;
+                --page-bg: #065f46;
+                --gold: #eab308;
+                --gold-light: #fcd34d;
+                --gold-dark: #b45309;
+                --text-light: rgba(255, 255, 255, 0.9);
+            }
+            
+            * {
+                margin: 0;
+                padding: 0;
+                box-sizing: border-box;
+            }
+            
             body {
                 margin: 0;
                 padding: 0;
                 font-family: 'Poppins', sans-serif;
+                background-color: var(--page-bg);
+                color: var(--text-light);
+                min-height: 100vh;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                overflow-x: hidden;
             }
             
             .container {
-            min-height: 100vh;
-            background-color: #065f46;
-            padding: 1.5rem;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .img {
-            width: 25px;
-            height: 25px;
-            align-items: center;
-        }
-        .book {
-            width: 600px;
-            height: 600px;
-            max-width: 95vw; /* Responsive width */
-            max-height: 95vw; /* Keep it square */
-            background-color: #064e3b;
-            border: 1px solid rgba(234, 179, 8, 0.2);
-            border-radius: 0.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem; /* Reduced padding for mobile */
-        }
-    
+                min-height: 100vh;
+                width: 100%;
+                padding: 2rem 1rem;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                position: relative;
+            }
+            
+            .book {
+                width: 600px;
+                height: 600px;
+                max-width: 90vw;
+                max-height: 90vw;
+                background-color: var(--book-bg);
+                border: 1px solid rgba(234, 179, 8, 0.3);
+                border-radius: 8px;
+                box-shadow: 
+                    0 25px 50px -12px rgba(0, 0, 0, 0.3),
+                    0 0 40px rgba(234, 179, 8, 0.1);
+                position: relative;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                padding: 3.5rem;
+                overflow: hidden;
+                transition: transform 0.3s ease, box-shadow 0.3s ease;
+            }
+            
+            .book:hover {
+                box-shadow: 
+                    0 30px 60px -15px rgba(0, 0, 0, 0.4),
+                    0 0 50px rgba(234, 179, 8, 0.15);
+                transform: translateY(-5px);
+            }
+            
             .frame {
                 position: absolute;
                 inset: 0;
                 pointer-events: none;
                 height: auto;
             }
-    
-            .frame rect {
-                stroke: #eab308;
+            
+            .frame rect, .frame path {
+                stroke: var(--gold);
                 fill: none;
+                transition: stroke 0.3s ease, opacity 0.3s ease;
             }
-    
+            
             .poem {
-            text-align: center;
-            opacity: 1;
-            transform: translateY(0);
-            transition: opacity 0.5s, transform 0.5s;
-            max-width: 100%; /* Ensure text doesn't overflow */
-            padding: 0 1rem; /* Add padding for readability */
-        }
-    
+                text-align: center;
+                opacity: 1;
+                transform: translateY(0);
+                transition: opacity 0.7s ease, transform 0.7s ease;
+                max-width: 90%;
+                padding: 0 1rem;
+                z-index: 2;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+            }
+            
             .poem.transitioning {
                 opacity: 0;
                 transform: translateY(-1rem);
@@ -73,58 +109,97 @@
             
             .title {
                 font-family: 'Montserrat', sans-serif;
-                font-size: clamp(0.875rem, 2.9vw, 1.5rem);
-                margin-bottom: 1.5rem;
-                color: #eab308;
+                font-size: 2.2rem;
+                margin-bottom: 2rem;
+                color: var(--gold);
                 letter-spacing: 0.05em;
+                font-weight: 600;
+                position: relative;
+                text-shadow: 0 0 10px rgba(234, 179, 8, 0.2);
             }
             
             .content {
-                font-size: clamp(0.875rem, 2vw, 1.125rem);
-                color: rgba(234, 179, 8, 0.9);
-                white-space: pre-line;
+                font-family: 'Poppins', sans-serif;
+                font-size: 1.35rem;
                 line-height: 1.75;
+                color: rgba(255, 255, 255, 0.95);
+                white-space: pre-line;
+                font-weight: 500;
+                text-shadow: 0 0 30px rgba(0, 0, 0, 0.3);
+            }
+
+            .content b {
+                color: var(--gold-light);
             }
             
             .buttons {
                 display: flex;
                 justify-content: center;
                 align-items: center;
-                gap: 1rem;
-                margin-top: 2rem;
+                gap: 1.5rem;
+                margin-top: 2.5rem;
                 flex-wrap: wrap;
                 padding: 0 1rem;
             }
-    
+            
             .poem-links {
                 display: flex;
                 gap: 0.5rem;
-                color: #eab308;
+                color: var(--gold);
                 align-items: center;
+                margin-right: 1rem;
             }
-    
+            
             .poem-links button {
                 background: none;
                 border: none;
-                padding: 0;
-                color: #eab308;
+                color: var(--gold);
                 cursor: pointer;
-                transition: color 0.2s;
+                transition: color 0.3s ease, transform 0.2s ease;
                 font-family: 'Poppins', sans-serif;
-                font-size: clamp(0.875rem, 3vw, 1rem);
+                font-size: 1rem;
+                padding: 0.5rem;
+                min-width: 2rem;
+                border-radius: 4px;
+                position: relative;
+                overflow: hidden;
             }
-    
-            .poem-links button:hover {
-                color: #fcd34d;
+            
+            .poem-links button:hover, 
+            .poem-links button:focus {
+                color: var(--gold-light);
+                outline: none;
+                transform: translateY(-2px);
+            }
+            
+            .poem-links button:focus {
+                box-shadow: 0 0 0 2px rgba(234, 179, 8, 0.3);
+            }
+            
+            .poem-links button::after {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 2px;
+                background-color: var(--gold);
+                opacity: 0;
+                transition: opacity 0.3s ease;
+            }
+            
+            .poem-links button:hover::after,
+            .poem-links button:focus::after {
+                opacity: 0.6;
             }
             
             .cake-button {
-                padding: 0.5rem;
+                padding: 0.6rem;
                 background-color: rgba(234, 179, 8, 0.1);
-                color: #eab308;
-                border: 1px solid rgba(234, 179, 8, 0.3);
-                border-radius: 0.5rem;
-                transition: background-color 0.2s;
+                color: var(--gold);
+                border: 1px solid rgba(234, 179, 8, 0.4);
+                border-radius: 8px;
+                transition: all 0.3s ease;
                 font-size: 1.25rem;
                 cursor: pointer;
                 min-width: 44px;
@@ -132,87 +207,183 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                position: relative;
+                overflow: hidden;
             }
             
-            .cake-button:hover {
+            .cake-button:hover, 
+            .cake-button:focus {
                 background-color: rgba(234, 179, 8, 0.2);
+                transform: translateY(-3px);
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                outline: none;
             }
-    
+            
+            .cake-button:focus {
+                box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.3);
+            }
+            
             .page-turn {
                 position: fixed;
                 bottom: 2rem;
                 right: 2rem;
-                width: 48px;
-                height: 48px;
+                width: 60px;
+                height: 60px;
                 cursor: pointer;
                 transition: transform 0.3s ease;
+                background-color: var(--book-bg);
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+                border: 1px solid rgba(234, 179, 8, 0.3);
+                z-index: 10;
             }
-    
+            
+            .page-turn svg {
+                width: 40px;
+                height: 40px;
+            }
+            
             .page-turn:hover {
-                transform: scale(1.1);
+                transform: scale(1.1) rotate(5deg);
             }
-    
+            
+            .page-turn:focus {
+                outline: none;
+                box-shadow: 0 0 0 3px rgba(234, 179, 8, 0.3), 0 5px 15px rgba(0, 0, 0, 0.15);
+            }
+            
             .page-turn path {
                 transition: stroke 0.3s ease;
+                stroke: var(--gold);
             }
-    
+            
             .page-turn:hover path {
-                stroke: #fcd34d;
+                stroke: var(--gold-light);
             }
-    
-            @media (max-width: 480px) {
+            
+            /* Pager styles removed */
+            
+            /* Background decoration */
+            .bg-decoration {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                pointer-events: none;
+                z-index: -1;
+                opacity: 0.04;
+            }
+            
+            /* Paper texture */
+            .paper-texture {
+                position: absolute;
+                inset: 0;
+                background-image: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiPgogIDxmaWx0ZXIgaWQ9Im5vaXNlIiB4PSIwIiB5PSIwIj4KICAgIDxmZVR1cmJ1bGVuY2UgdHlwZT0iZnJhY3RhbE5vaXNlIiBiYXNlRnJlcXVlbmN5PSIwLjY1IiBudW1PY3RhdmVzPSIzIiBzdGl0Y2hUaWxlcz0ic3RpdGNoIi8+CiAgICA8ZmVCbGVuZCBtb2RlPSJzY3JlZW4iLz4KICA8L2ZpbHRlcj4KICA8cmVjdCB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBmaWx0ZXI9InVybCgjbm9pc2UpIiBvcGFjaXR5PSIwLjA1Ii8+Cjwvc3ZnPg==');
+                opacity: 0.1;
+                mix-blend-mode: overlay;
+                z-index: 1;
+            }
+            
+            @media (max-width: 768px) {
                 .container {
                     padding: 1rem;
                 }
-    
+                
                 .book {
-                    width: 100%;
-                    max-width: 500px;
-                    margin: auto;
-                    padding: 1rem;
-                    max-width: 85vw;
-                    max-height: 85vw;
+                    padding: 2rem;
                 }
-    
-                .poem {
-                    width: 90%;
-                    max-width: 90%;
-                }
-    
-                .content {
-                    font-size: 0.875rem;
-                    line-height: 1.75;
-                }
-    
+                
                 .title {
-                    font-size: 1.5rem;
-                    margin-bottom: 1.25rem;
+                    font-size: 1.8rem;
+                    margin-bottom: 1.5rem;
                 }
-    
+                
+                .content {
+                    font-size: 1.2rem;
+                    line-height: 1.6;
+                }
+                
+                .pager {
+                    top: 1rem;
+                    left: 1rem;
+                    font-size: 1rem;
+                }
+                
                 .page-turn {
-                    bottom: 1rem;
-                    right: 1rem;
-                    width: 40px;
-                    height: 40px;
+                    bottom: 1.5rem;
+                    right: 1.5rem;
+                    width: 50px;
+                    height: 50px;
+                }
+                
+                .page-turn svg {
+                    width: 35px;
+                    height: 35px;
                 }
             }
-    
-            @media (hover: none) {
-                .poem-links button, .cake-button {
+            
+            @media (max-width: 480px) {
+                .book {
+                    padding: 1.5rem;
+                    height: 80vh;
+                    max-height: none;
+                }
+                
+                .title {
+                    font-size: 1.5rem;
+                    margin-bottom: 1.2rem;
+                }
+                
+                .content {
+                    font-size: 1.1rem;
+                    line-height: 1.5;
+                }
+                
+                .buttons {
+                    margin-top: 1.5rem;
+                    gap: 1rem;
+                }
+                
+                .poem-links button {
                     min-height: 44px;
                     min-width: 44px;
+                }
+                
+                .page-turn {
+                    width: 45px;
+                    height: 45px;
+                    bottom: 1rem;
+                    right: 1rem;
+                }
+                
+                .page-turn svg {
+                    width: 30px;
+                    height: 30px;
+                }
+            }
+            
+            @media (prefers-reduced-motion) {
+                .book, .poem, .page-turn, .cake-button, .poem-links button {
+                    transition: none;
                 }
             }
         </style>
     </head>
 <body>
+    <div class="bg-decoration"></div>
     
     <div class="container">
-
+        <!-- Pager removed -->
+    
         <div class="book">
+            <div class="paper-texture"></div>
             <svg class="frame" viewBox="0 0 500 500" preserveAspectRatio="xMidYMid meet">
-                <rect x="40" y="40" width="480" height="420" stroke="#eab308" stroke-width="2" opacity="0.4" />
-                <rect x="50" y="50" width="460" height="400" stroke="#eab308" stroke-width="1" opacity="0.3" />
+                <rect x="40" y="40" width="420" height="420" stroke="#eab308" stroke-width="2" opacity="0.4" />
+                <rect x="50" y="50" width="400" height="400" stroke="#eab308" stroke-width="1" opacity="0.3" />
                 <g opacity="0.4">
                     <path d="M 35 35 L 75 35 M 35 35 L 35 75" stroke="#eab308" fill="none" stroke-width="1"/>
                     <path d="M 465 35 L 425 35 M 465 35 L 465 75" stroke="#eab308" fill="none" stroke-width="1"/>
@@ -221,9 +392,7 @@
                 </g>
             </svg>
         
-
             <div class="poem">
-            
                 <h2 class="title">The Gospel of GORGE</h2>
                 <p class="content">Some say "divine," some say "grand,"
 We say "<b>gorge</b>" with a flourish of hand.
@@ -235,30 +404,33 @@ A state of mind for those who succeed.</p>
 
         <div class="buttons">
             <div class="poem-links">
-                <button onclick="goToPoem(2)">2</button>
-                <span>.</span>
-                <button onclick="goToPoem(20)">20</button>
-                <span>.</span>
-                <button onclick="goToPoem(25)">25</button>
+                <button onclick="goToPoem(2)" aria-label="Go to poem 2">2</button>
+                <span aria-hidden="true">•</span>
+                <button onclick="goToPoem(20)" aria-label="Go to poem 20">20</button>
+                <span aria-hidden="true">•</span>
+                <button onclick="goToPoem(25)" aria-label="Go to poem 25">25</button>
             </div>
-            <button class="cake-button" onclick="showBirthdayPoem()">🎂</button>
+            
+            <button class="cake-button" onclick="showBirthdayPoem()" aria-label="Show birthday poem">🎂</button>
         </div>
 
-        <svg class="page-turn" viewBox="0 0 100 100" onclick="nextPoem()">
-            <path
-                d="M 20 80 Q 20 20, 80 20"
-                stroke="#eab308"
-                stroke-width="2"
-                fill="none"
-            />
-            <path
-                d="M 23 77 Q 23 23, 77 23"
-                stroke="#eab308"
-                stroke-width="1"
-                fill="none"
-                opacity="0.6"
-            />
-        </svg>
+        <button class="page-turn" onclick="nextPoem()" aria-label="Turn to random poem">
+            <svg viewBox="0 0 100 100">
+                <path
+                    d="M 20 80 Q 20 20, 80 20"
+                    stroke="#eab308"
+                    stroke-width="2"
+                    fill="none"
+                />
+                <path
+                    d="M 23 77 Q 23 23, 77 23"
+                    stroke="#eab308"
+                    stroke-width="1"
+                    fill="none"
+                    opacity="0.6"
+                />
+            </svg>
+        </button>
     </div>
 
     <script>
@@ -266,7 +438,7 @@ A state of mind for those who succeed.</p>
             {
                 title: "The Gospel of GORGE",
                 content: `Some say "divine," some say "grand,"
-We say "gorge" with a flourish of hand.
+We say "<b>gorge</b>" with a flourish of hand.
 
 Gorge is a lifestyle, a mantra, a creed,
 A state of mind for those who succeed.`
@@ -404,8 +576,8 @@ Empowered, unshaken, fully known.`
             },
             {
                 title: "OVER",
-                content: `Speak your  truth, then say 'over' with grace.
-                And let the conversation flow, no race.`
+                content: `Speak your truth, then say 'over' with grace.
+And let the conversation flow, no race.`
             },
             {
                 title: "Meekcia Magic",
@@ -523,32 +695,78 @@ A mystic, a force, wild and free,
 Exactly where she's meant to be.`
         };
 
-        function updatePoem(poem) {
+        let currentPoemIndex = 0;
+        let birthdayShown = false;
+
+        function updatePoem(poem, index = null) {
             const poemElement = document.querySelector('.poem');
             poemElement.classList.add('transitioning');
             
             setTimeout(() => {
                 document.querySelector('.title').textContent = poem.title;
-                document.querySelector('.content').textContent = poem.content;
+                document.querySelector('.content').innerHTML = poem.content;
                 poemElement.classList.remove('transitioning');
+                
+                // Store current index if provided
+                if (index !== null) {
+                    currentPoemIndex = index;
+                }
             }, 500);
         }
 
+        // Pager function removed
+
         function nextPoem() {
-            const randomIndex = Math.floor(Math.random() * poems.length);
-            updatePoem(poems[randomIndex]);
+            let randomIndex;
+            do {
+                randomIndex = Math.floor(Math.random() * poems.length);
+            } while (randomIndex === currentPoemIndex); // Ensure we get a different poem
+            
+            updatePoem(poems[randomIndex], randomIndex);
         }
 
         function goToPoem(number) {
             if (poems[number - 1]) {
-                updatePoem(poems[number - 1]);
+                updatePoem(poems[number - 1], number - 1);
             }
+        }
+
+        function previousPoem() {
+            let index = currentPoemIndex - 1;
+            if (index < 0) index = poems.length - 1;
+            updatePoem(poems[index], index);
+        }
+
+        function nextSequentialPoem() {
+            let index = currentPoemIndex + 1;
+            if (index >= poems.length) index = 0;
+            updatePoem(poems[index], index);
         }
 
         function showBirthdayPoem() {
             updatePoem(birthdayPoem);
-            document.querySelector('.cake-button').style.display = 'none';
+            birthdayShown = true;
+            document.querySelector('.cake-button:last-child').style.display = 'none';
         }
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            updatePoem(poems[0], 0);
+            
+            // Navigation buttons removed
+            
+            // Add keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'ArrowLeft') previousPoem();
+                if (e.key === 'ArrowRight') nextSequentialPoem();
+                if (e.key === ' ') nextPoem(); // Spacebar
+            });
+        });
+        
+        // Initialize immediately
+        updatePoem(poems[0], 0);
+        
+        // Previous and next buttons removed
     </script>
 </body>
 </html>
