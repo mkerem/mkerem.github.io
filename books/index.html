@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Detail - Literary Journey</title>
+    <title>Book Tracking</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
@@ -26,7 +26,7 @@
             font-family: 'Playfair Display', 'Georgia', serif;
         }
         
-        input, select, button {
+        input, select, button, textarea {
             font-family: 'Nunito', 'Segoe UI', sans-serif;
         }
         
@@ -75,203 +75,176 @@
         }
         
         main {
-            max-width: 900px;
+            max-width: 1200px;
             margin: 2rem auto;
             padding: 0 1rem;
         }
         
-        .back-link {
-            display: inline-flex;
+        .filters {
+            background-color: var(--card-color);
+            padding: 1.5rem;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.5rem;
             align-items: center;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 150px;
+        }
+        
+        label {
+            font-size: 0.9rem;
+            margin-bottom: 0.3rem;
             color: var(--light-text);
-            text-decoration: none;
-            margin-bottom: 1.5rem;
-            transition: color 0.3s;
             font-family: 'Nunito', sans-serif;
         }
         
-        .back-link:hover {
-            color: var(--primary-color);
+        select, input {
+            padding: 0.6rem 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background-color: white;
+            font-size: 0.95rem;
         }
         
-        .back-link::before {
-            content: "←";
-            margin-right: 0.5rem;
+        .star-filter {
+            display: flex;
+            gap: 0.5rem;
         }
         
-        .book-detail {
+        .star {
+            color: #ccc;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .star.active {
+            color: #ffc107;
+        }
+        
+        .search-bar {
+            flex-grow: 1;
+        }
+        
+        .search-bar input {
+            width: 100%;
+            padding: 0.6rem 1rem;
+        }
+        
+        .book-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+            gap: 2rem;
+        }
+        
+        .book-card {
             background-color: var(--card-color);
             border-radius: var(--border-radius);
             box-shadow: var(--box-shadow);
-            overflow: hidden;
-            margin-bottom: 2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+            padding: 1.5rem;
+            border-top: 3px solid var(--secondary-color);
         }
         
-        /* Book Header */
-        .book-header {
-            padding: 2.5rem;
-            border-bottom: 1px solid #eee;
+        .book-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border-top-color: var(--primary-color);
         }
         
-        .book-header h1 {
-            font-size: 2.2rem;
+        .book-info {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        
+        .book-title {
+            font-size: 1.2rem;
+            font-weight: 600;
             margin-bottom: 0.5rem;
-            color: var(--text-color);
+            line-height: 1.4;
         }
         
         .book-author {
-            font-size: 1.3rem;
+            font-size: 0.95rem;
             color: var(--light-text);
-            margin-bottom: 1.2rem;
-        }
-        
-        .book-rating {
-            color: #ffc107;
-            font-size: 1.2rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .genre-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-        }
-        
-        .genre-tag {
-            background-color: var(--secondary-color);
-            color: white;
-            padding: 0.4rem 0.8rem;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 500;
-            font-family: 'Nunito', sans-serif;
+            margin-bottom: 0.8rem;
         }
         
         .book-meta {
             display: flex;
-            flex-wrap: wrap;
-            gap: 2rem;
-        }
-        
-        .meta-item {
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .meta-label {
-            font-size: 0.85rem;
-            color: var(--light-text);
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
-            font-family: 'Nunito', sans-serif;
-            margin-bottom: 0.2rem;
-        }
-        
-        .meta-value {
-            font-weight: 500;
-            font-size: 1.1rem;
-        }
-        
-        /* Content Sections */
-        .book-content {
-            padding: 2.5rem;
-        }
-        
-        .book-section {
-            margin-bottom: 3rem;
-        }
-        
-        .book-section:last-child {
-            margin-bottom: 0;
-        }
-        
-        .section-title {
-            font-size: 1.5rem;
-            margin-bottom: 1.5rem;
-            color: var(--primary-color);
-            position: relative;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #eee;
-        }
-        
-        .section-title::after {
-            content: "";
-            position: absolute;
-            bottom: -2px;
-            left: 0;
-            width: 60px;
-            height: 2px;
-            background-color: var(--primary-color);
-        }
-        
-        /* Summary Section */
-        .summary-list {
-            list-style-type: none;
-            padding-left: 1.5rem;
-        }
-        
-        .summary-list li {
-            position: relative;
-            margin-bottom: 1rem;
-            padding-left: 1rem;
-        }
-        
-        .summary-list li::before {
-            content: "•";
-            position: absolute;
-            left: -0.8rem;
-            color: var(--primary-color);
-            font-weight: bold;
-        }
-        
-        /* Highlights Section */
-        .highlight-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1.8rem;
-            margin-bottom: 1.8rem;
-        }
-        
-        .highlight-card {
-            background-color: #f0f7ff;
-            border-left: 5px solid var(--primary-color);
-            padding: 1.8rem 1.8rem 1.5rem;
-            border-radius: 0 var(--border-radius) var(--border-radius) 0;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-        
-        .highlight-text {
-            font-style: italic;
-            line-height: 1.8;
-            font-size: 1.15rem;
-            color: var(--text-color);
-            margin-bottom: 1rem;
-        }
-        
-        .highlight-page {
+            justify-content: space-between;
+            align-items: center;
             font-size: 0.9rem;
             color: var(--light-text);
-            font-family: 'Nunito', sans-serif;
-            margin-bottom: 0.8rem;
+            margin-top: auto;
+            padding-top: 1rem;
         }
         
-        .highlight-tags {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
+        .book-rating {
+            color: #ffc107;
         }
         
-        .highlight-tag {
-            background-color: #e1f0ff;
-            color: var(--primary-color);
+        .genre-tag {
+            display: inline-block;
+            background-color: var(--secondary-color);
+            color: white;
             padding: 0.3rem 0.7rem;
             border-radius: 20px;
             font-size: 0.8rem;
+            margin-top: 0.5rem;
             font-family: 'Nunito', sans-serif;
         }
         
-        .add-highlight {
+        .add-book {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            width: 60px;
+            height: 60px;
+            background-color: var(--primary-color);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            box-shadow: var(--box-shadow);
+            cursor: pointer;
+            transition: transform 0.3s, background-color 0.3s;
+            z-index: 50;
+        }
+        
+        .add-book:hover {
+            transform: scale(1.1);
+            background-color: #1a6ed8;
+        }
+        
+        /* Empty state styling */
+        .empty-state {
+            text-align: center;
+            padding: 4rem 1rem;
+            color: var(--light-text);
+        }
+        
+        .empty-state h2 {
+            margin-bottom: 1rem;
+            color: var(--text-color);
+        }
+        
+        .empty-state p {
+            max-width: 500px;
+            margin: 0 auto 2rem;
+        }
+        
+        .start-btn {
             display: inline-block;
             background-color: var(--primary-color);
             color: white;
@@ -281,77 +254,227 @@
             font-weight: 500;
             transition: background-color 0.3s;
             font-family: 'Nunito', sans-serif;
-            box-shadow: 0 3px 8px rgba(58, 134, 255, 0.3);
         }
         
-        .add-highlight:hover {
+        .start-btn:hover {
             background-color: #1a6ed8;
         }
         
-        /* AI Analysis Section */
-        .analysis-container {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 1.5rem;
-        }
-        
-        .analysis-card {
-            background-color: #fbfbfb;
-            padding: 1.8rem;
-            border-radius: var(--border-radius);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-        }
-        
-        .analysis-title {
-            color: var(--primary-color);
-            margin-bottom: 1.2rem;
-            font-weight: 600;
-            font-size: 1.2rem;
-        }
-        
-        .analysis-list {
-            list-style-type: none;
-        }
-        
-        .analysis-list li {
-            position: relative;
-            padding-left: 1.5rem;
-            margin-bottom: 1rem;
-            line-height: 1.6;
-        }
-        
-        .analysis-list li:last-child {
-            margin-bottom: 0;
-        }
-        
-        .analysis-list li::before {
-            content: "•";
-            color: var(--primary-color);
-            position: absolute;
+        /* Modal Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
             left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s, visibility 0.3s;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal {
+            background-color: var(--card-color);
+            border-radius: var(--border-radius);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 600px;
+            max-height: 90vh;
+            overflow-y: auto;
+            transform: translateY(20px);
+            transition: transform 0.3s;
+        }
+        
+        .modal-overlay.active .modal {
+            transform: translateY(0);
+        }
+        
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            color: var(--text-color);
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--light-text);
+            transition: color 0.3s;
+        }
+        
+        .modal-close:hover {
+            color: var(--text-color);
+        }
+        
+        .modal-body {
+            padding: 1.5rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            background-color: white;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+        
+        .rating-input {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .rating-star {
+            color: #ccc;
+            font-size: 1.8rem;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        
+        .rating-star:hover,
+        .rating-star.active {
+            color: #ffc107;
+        }
+        
+        .tag-input {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            min-height: 100px;
+        }
+        
+        .tag {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            display: flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+        
+        .tag-remove {
+            cursor: pointer;
             font-weight: bold;
-            font-size: 1.2rem;
+        }
+        
+        .tag-add {
+            display: flex;
+            margin-top: 0.5rem;
+        }
+        
+        .tag-add input {
+            flex-grow: 1;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
+        }
+        
+        .tag-add button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            cursor: pointer;
+        }
+        
+        .modal-footer {
+            padding: 1rem 1.5rem;
+            border-top: 1px solid #eee;
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+        }
+        
+        .btn {
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            font-weight: 500;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .btn-secondary {
+            background-color: #e9ecef;
+            color: var(--text-color);
+            border: none;
+        }
+        
+        .btn-secondary:hover {
+            background-color: #dee2e6;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            background-color: #1a6ed8;
         }
         
         @media (max-width: 768px) {
-            .book-header {
-                padding: 1.5rem;
+            .book-grid {
+                grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+                gap: 1.5rem;
             }
             
-            .book-content {
-                padding: 1.5rem;
+            nav ul {
+                gap: 1.5rem;
             }
             
-            .book-header h1 {
-                font-size: 1.8rem;
-            }
-            
-            .book-meta {
+            .filters {
+                flex-direction: column;
+                align-items: stretch;
                 gap: 1rem;
             }
             
-            .meta-item {
-                min-width: 45%;
+            .search-bar {
+                order: -1;
             }
         }
     </style>
@@ -362,154 +485,402 @@
             <h1>Literary Journey</h1>
             <nav>
                 <ul>
-                    <li><a href="#" class="active">Books</a></li>
-                    <li><a href="#">Highlights</a></li>
-                    <li><a href="#">Dashboard</a></li>
+                    <li><a href="index.html" class="active">Books</a></li>
+                    <li><a href="highlights.html">Highlights</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
                 </ul>
             </nav>
         </div>
     </header>
     
     <main>
-        <a href="#" class="back-link">Back to Books</a>
-        
-        <div class="book-detail">
-            <!-- Book Header with basic info -->
-            <div class="book-header">
-                <h1>The Pathless Path</h1>
-                <p class="book-author">Paul Millerd</p>
-                
-                <div class="book-rating">★★★★★</div>
-                
-                <div class="genre-tags">
-                    <span class="genre-tag">Personal Development</span>
-                    <span class="genre-tag">Career</span>
-                    <span class="genre-tag">Philosophy</span>
-                </div>
-                
-                <div class="book-meta">
-                    <div class="meta-item">
-                        <span class="meta-label">Read In</span>
-                        <span class="meta-value">2023</span>
-                    </div>
-                    
-                    <div class="meta-item">
-                        <span class="meta-label">Pages</span>
-                        <span class="meta-value">248</span>
-                    </div>
-                    
-                    <div class="meta-item">
-                        <span class="meta-label">Publisher</span>
-                        <span class="meta-value">Self-published</span>
-                    </div>
-                    
-                    <div class="meta-item">
-                        <span class="meta-label">Published</span>
-                        <span class="meta-value">2022</span>
-                    </div>
+        <section class="filters">
+            <div class="filter-group">
+                <label for="year-filter">Year Read</label>
+                <select id="year-filter">
+                    <option value="all">All Years</option>
+                    <option value="2025">2025</option>
+                    <option value="2024">2024</option>
+                    <option value="2023">2023</option>
+                    <option value="2022">2022</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label for="genre-filter">Genre</label>
+                <select id="genre-filter">
+                    <option value="all">All Genres</option>
+                    <option value="fiction">Fiction</option>
+                    <option value="non-fiction">Non-Fiction</option>
+                    <option value="science-fiction">Science Fiction</option>
+                    <option value="fantasy">Fantasy</option>
+                    <option value="biography">Biography</option>
+                    <option value="business">Business</option>
+                    <option value="philosophy">Philosophy</option>
+                    <option value="career">Career</option>
+                    <option value="personal-development">Personal Development</option>
+                </select>
+            </div>
+            
+            <div class="filter-group">
+                <label>Rating</label>
+                <div class="star-filter">
+                    <span class="star" data-value="1">★</span>
+                    <span class="star" data-value="2">★</span>
+                    <span class="star" data-value="3">★</span>
+                    <span class="star" data-value="4">★</span>
+                    <span class="star" data-value="5">★</span>
                 </div>
             </div>
             
-            <!-- Book Content Sections -->
-            <div class="book-content">
-                <!-- Summary Section -->
-                <section class="book-section">
-                    <h2 class="section-title">My Summary</h2>
-                    <ul class="summary-list">
-                        <li>The Pathless Path is a thought-provoking exploration of alternative ways to live and work beyond the conventional career path. Paul Millerd shares his personal journey of leaving the corporate world to embrace uncertainty and create a different relationship with work.</li>
-                        <li>The book challenges our cultural obsession with productivity and career advancement, suggesting that the traditional path often leads to burnout, emptiness, and disconnection from what truly matters.</li>
-                        <li>Millerd introduces the concept of the "pathless path" as an alternative way of living that embraces uncertainty and discomfort while rejecting society's default expectations. It's about finding personal meaning rather than following established routes.</li>
-                        <li>Through personal stories and philosophical insights, the book offers a framework for rethinking success, exploring concepts like "wu wei" (non-doing), eudaimonia (flourishing), and the importance of wonder in making life changes.</li>
-                        <li>The book has profoundly influenced how I think about career, success, and meaning, encouraging me to question default assumptions and embrace more intentional choices about how I spend my time and energy.</li>
-                    </ul>
-                </section>
-                
-                <!-- Highlights Section -->
-                <section class="book-section">
-                    <h2 class="section-title">Highlights</h2>
-                    <div class="highlight-container">
-                        <div class="highlight-card">
-                            <p class="highlight-text">"The pathless path is an alternative to the default path. It is an embrace of uncertainty and discomfort. It's a call to adventure in a world that tells us to conform. For me, it's also a gentle reminder to laugh when things feel out of control and trust that an uncertain future is not a problem to be solved."</p>
-                            <div class="highlight-page">Page 12</div>
-                            <div class="highlight-tags">
-                                <span class="highlight-tag">Uncertainty</span>
-                                <span class="highlight-tag">Adventure</span>
-                            </div>
-                        </div>
-                        
-                        <div class="highlight-card">
-                            <p class="highlight-text">"Your life is too short and too valuable to fritter away in work. If you don't get out now, you may end up like the frog that is placed in a pot of fresh water on the stove. As the temperature is gradually increased, the frog feels restless and uncomfortable, but not uncomfortable enough to jump out."</p>
-                            <div class="highlight-page">Page 87</div>
-                            <div class="highlight-tags">
-                                <span class="highlight-tag">Work-life</span>
-                                <span class="highlight-tag">Awareness</span>
-                            </div>
-                        </div>
-                        
-                        <div class="highlight-card">
-                            <p class="highlight-text">"In my conversations with people who have made changes in their life, one thing seems to work reliably: wonder. Wonder is the state of being open to the world, its beauty, and potential possibilities. With wonder, the need to cope becomes less important and the discomfort on the current path becomes more noticeable."</p>
-                            <div class="highlight-page">Page 142</div>
-                            <div class="highlight-tags">
-                                <span class="highlight-tag">Wonder</span>
-                                <span class="highlight-tag">Change</span>
-                                <span class="highlight-tag">Possibility</span>
-                            </div>
+            <div class="search-bar">
+                <input type="text" placeholder="Search books by title, author, or tags...">
+            </div>
+        </section>
+        
+        <!-- Book grid -->
+        <section class="book-grid">
+            <div class="book-card">
+                <div class="book-info">
+                    <h3 class="book-title">The Pathless Path</h3>
+                    <p class="book-author">Paul Millerd</p>
+                    <div class="book-meta">
+                        <span class="book-year">2023</span>
+                        <span class="book-rating">★★★★★</span>
+                    </div>
+                    <span class="genre-tag">Personal Development</span>
+                </div>
+            </div>
+            
+            <div class="book-card">
+                <div class="book-info">
+                    <h3 class="book-title">The Rabbit Effect</h3>
+                    <p class="book-author">Kelli Harding</p>
+                    <div class="book-meta">
+                        <span class="book-year">2023</span>
+                        <span class="book-rating">★★★★☆</span>
+                    </div>
+                    <span class="genre-tag">Health</span>
+                </div>
+            </div>
+            
+            <div class="book-card">
+                <div class="book-info">
+                    <h3 class="book-title">Project Hail Mary</h3>
+                    <p class="book-author">Andy Weir</p>
+                    <div class="book-meta">
+                        <span class="book-year">2023</span>
+                        <span class="book-rating">★★★★☆</span>
+                    </div>
+                    <span class="genre-tag">Science Fiction</span>
+                </div>
+            </div>
+            
+            <div class="book-card">
+                <div class="book-info">
+                    <h3 class="book-title">Educated</h3>
+                    <p class="book-author">Tara Westover</p>
+                    <div class="book-meta">
+                        <span class="book-year">2022</span>
+                        <span class="book-rating">★★★★★</span>
+                    </div>
+                    <span class="genre-tag">Memoir</span>
+                </div>
+            </div>
+            
+            <div class="book-card">
+                <div class="book-info">
+                    <h3 class="book-title">Deep Work</h3>
+                    <p class="book-author">Cal Newport</p>
+                    <div class="book-meta">
+                        <span class="book-year">2022</span>
+                        <span class="book-rating">★★★★☆</span>
+                    </div>
+                    <span class="genre-tag">Productivity</span>
+                </div>
+            </div>
+            
+            <div class="book-card">
+                <div class="book-info">
+                    <h3 class="book-title">Four Thousand Weeks</h3>
+                    <p class="book-author">Oliver Burkeman</p>
+                    <div class="book-meta">
+                        <span class="book-year">2023</span>
+                        <span class="book-rating">★★★★★</span>
+                    </div>
+                    <span class="genre-tag">Philosophy</span>
+                </div>
+            </div>
+            
+            <div class="book-card">
+                <div class="book-info">
+                    <h3 class="book-title">The Three-Body Problem</h3>
+                    <p class="book-author">Liu Cixin</p>
+                    <div class="book-meta">
+                        <span class="book-year">2023</span>
+                        <span class="book-rating">★★★★☆</span>
+                    </div>
+                    <span class="genre-tag">Science Fiction</span>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <div class="add-book" id="openAddBookModal">+</div>
+    
+    <!-- Add Book Modal -->
+    <div class="modal-overlay" id="addBookModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Add New Book</h2>
+                <button class="modal-close" id="closeModal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <form id="addBookForm">
+                    <div class="form-group">
+                        <label for="bookTitle">Book Title*</label>
+                        <input type="text" id="bookTitle" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bookAuthor">Author*</label>
+                        <input type="text" id="bookAuthor" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="yearRead">Year Read*</label>
+                        <select id="yearRead" required>
+                            <option value="2025">2025</option>
+                            <option value="2024">2024</option>
+                            <option value="2023" selected>2023</option>
+                            <option value="2022">2022</option>
+                            <option value="2021">2021</option>
+                            <option value="2020">2020</option>
+                            <option value="older">Before 2020</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bookRating">Your Rating</label>
+                        <div class="rating-input">
+                            <span class="rating-star" data-rating="1">★</span>
+                            <span class="rating-star" data-rating="2">★</span>
+                            <span class="rating-star" data-rating="3">★</span>
+                            <span class="rating-star" data-rating="4">★</span>
+                            <span class="rating-star" data-rating="5">★</span>
                         </div>
                     </div>
                     
-                    <a href="#" class="add-highlight">Add New Highlight</a>
-                </section>
-                
-                <!-- AI Analysis Section -->
-                <section class="book-section">
-                    <h2 class="section-title">AI Analysis</h2>
-                    <div class="analysis-container">
-                        <div class="analysis-card">
-                            <h3 class="analysis-title">Main Themes</h3>
-                            <ul class="analysis-list">
-                                <li>Embracing uncertainty as a pathway to personal growth</li>
-                                <li>Challenging conventional definitions of success and career progression</li>
-                                <li>The concept of the "pathless path" as an alternative to default life choices</li>
-                                <li>The tension between conformity and authentic self-expression</li>
-                                <li>Finding meaning through personal exploration rather than external validation</li>
-                            </ul>
+                    <div class="form-group">
+                        <label>Genres</label>
+                        <div class="tag-input" id="genreTags">
+                            <!-- Example tag -->
+                            <div class="tag">
+                                Fiction <span class="tag-remove">×</span>
+                            </div>
                         </div>
-                        
-                        <div class="analysis-card">
-                            <h3 class="analysis-title">Key Insights</h3>
-                            <ul class="analysis-list">
-                                <li>Wonder and curiosity are essential catalysts for meaningful life change</li>
-                                <li>The concept of "wu wei" (non-doing) as a state of flow and connectedness</li>
-                                <li>Eudaimonia (flourishing) as a more valuable pursuit than mere productivity</li>
-                                <li>The importance of finding "path experts" who are ahead on similar journeys</li>
-                                <li>Creating space for emergence rather than forcing specific outcomes</li>
-                            </ul>
-                        </div>
-                        
-                        <div class="analysis-card">
-                            <h3 class="analysis-title">Patterns in Highlights</h3>
-                            <ul class="analysis-list">
-                                <li>Repeated emphasis on embracing discomfort and uncertainty as growth opportunities</li>
-                                <li>Philosophical references that challenge conventional thinking about work and success</li>
-                                <li>Personal stories used to illustrate abstract concepts about life and meaning</li>
-                                <li>Recurring theme of creating space for personal exploration and discovery</li>
-                                <li>Contrasting the "default path" with alternative ways of living and working</li>
-                            </ul>
+                        <div class="tag-add">
+                            <input type="text" id="genreInput" placeholder="Add a genre...">
+                            <button type="button" id="addGenre">Add</button>
                         </div>
                     </div>
-                </section>
+                    
+                    <div class="form-group">
+                        <label for="bookPages">Number of Pages</label>
+                        <input type="number" id="bookPages" min="1">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="publisher">Publisher</label>
+                        <input type="text" id="publisher">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="publishYear">Publication Year</label>
+                        <input type="number" id="publishYear">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="bookSummary">Your Summary</label>
+                        <textarea id="bookSummary" placeholder="Write your thoughts about this book..."></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" id="cancelAdd">Cancel</button>
+                <button class="btn btn-primary" id="submitBook">Add Book</button>
             </div>
         </div>
-    </main>
+    </div>
     
     <script>
-        // Just basic scroll behavior for a nicer experience
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                document.querySelector(this.getAttribute('href')).scrollIntoView({
-                    behavior: 'smooth'
+        // Basic interaction for the stars filter
+        const stars = document.querySelectorAll('.star-filter .star');
+        let currentRating = 0;
+        
+        stars.forEach(star => {
+            star.addEventListener('click', () => {
+                const value = parseInt(star.getAttribute('data-value'));
+                
+                // Toggle the rating if clicking the same star
+                if (value === currentRating) {
+                    currentRating = 0;
+                    stars.forEach(s => s.classList.remove('active'));
+                } else {
+                    currentRating = value;
+                    
+                    // Update star appearance
+                    stars.forEach(s => {
+                        const starValue = parseInt(s.getAttribute('data-value'));
+                        if (starValue <= currentRating) {
+                            s.classList.add('active');
+                        } else {
+                            s.classList.remove('active');
+                        }
+                    });
+                }
+                
+                // Filter books based on rating (would be implemented with actual data)
+                console.log(`Filtering books with rating: ${currentRating}`);
+            });
+        });
+        
+        // Modal functionality
+        const modal = document.getElementById('addBookModal');
+        const openModalBtn = document.getElementById('openAddBookModal');
+        const closeModalBtn = document.getElementById('closeModal');
+        const cancelBtn = document.getElementById('cancelAdd');
+        
+        openModalBtn.addEventListener('click', () => {
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden'; // Prevent scrolling while modal is open
+        });
+        
+        function closeModal() {
+            modal.classList.remove('active');
+            document.body.style.overflow = ''; // Re-enable scrolling
+        }
+        
+        closeModalBtn.addEventListener('click', closeModal);
+        cancelBtn.addEventListener('click', closeModal);
+        
+        // Close modal when clicking outside
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+        
+        // Book Rating in modal
+        const ratingStars = document.querySelectorAll('.rating-star');
+        let selectedRating = 0;
+        
+        ratingStars.forEach(star => {
+            star.addEventListener('click', () => {
+                const rating = parseInt(star.getAttribute('data-rating'));
+                selectedRating = rating;
+                
+                // Update stars display
+                ratingStars.forEach(s => {
+                    if (parseInt(s.getAttribute('data-rating')) <= rating) {
+                        s.classList.add('active');
+                    } else {
+                        s.classList.remove('active');
+                    }
                 });
+            });
+        });
+        
+        // Genre tag management
+        const genreInput = document.getElementById('genreInput');
+        const addGenreBtn = document.getElementById('addGenre');
+        const genreTags = document.getElementById('genreTags');
+        
+        // Add a new genre tag
+        function addGenreTag(genre) {
+            if (!genre.trim()) return;
+            
+            const tag = document.createElement('div');
+            tag.className = 'tag';
+            tag.innerHTML = `${genre} <span class="tag-remove">×</span>`;
+            
+            // Remove tag when clicking the remove button
+            tag.querySelector('.tag-remove').addEventListener('click', () => {
+                tag.remove();
+            });
+            
+            genreTags.appendChild(tag);
+            genreInput.value = ''; // Clear input
+        }
+        
+        addGenreBtn.addEventListener('click', () => {
+            addGenreTag(genreInput.value);
+        });
+        
+        // Allow adding genre with Enter key
+        genreInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                addGenreTag(genreInput.value);
+            }
+        });
+        
+        // Form submission
+        const addBookForm = document.getElementById('addBookForm');
+        const submitBtn = document.getElementById('submitBook');
+        
+        submitBtn.addEventListener('click', () => {
+            // Check form validity
+            const title = document.getElementById('bookTitle').value;
+            const author = document.getElementById('bookAuthor').value;
+            
+            if (!title || !author) {
+                alert('Please fill in all required fields');
+                return;
+            }
+            
+            // Get all genre tags
+            const genres = [];
+            document.querySelectorAll('#genreTags .tag').forEach(tag => {
+                // Extract tag text (excluding the × symbol)
+                const genreText = tag.textContent.replace('×', '').trim();
+                genres.push(genreText);
+            });
+            
+            // Create book object - in a real app, this would be saved to database
+            const newBook = {
+                title: title,
+                author: author,
+                yearRead: document.getElementById('yearRead').value,
+                rating: selectedRating,
+                genres: genres,
+                pages: document.getElementById('bookPages').value,
+                publisher: document.getElementById('publisher').value,
+                publishYear: document.getElementById('publishYear').value,
+                summary: document.getElementById('bookSummary').value
+            };
+            
+            console.log('Book added:', newBook);
+            
+            // In a real app, you'd save the book to your database here
+            alert('Book added successfully!');
+            
+            // Close the modal and reset form
+            closeModal();
+            addBookForm.reset();
+            document.querySelectorAll('#genreTags .tag').forEach(tag => tag.remove());
+            ratingStars.forEach(star => star.classList.remove('active'));
+            selectedRating = 0;
+        });
+        
+        // Book card click to navigate to book detail
+        document.querySelectorAll('.book-card').forEach(card => {
+            card.addEventListener('click', () => {
+                // In a real app, this would navigate to the book detail page
+                const title = card.querySelector('.book-title').textContent;
+                console.log(`Navigating to book: ${title}`);
+                // window.location.href = `/book-detail.html?title=${encodeURIComponent(title)}`;
+                alert(`Navigating to book: ${title}`);
             });
         });
     </script>

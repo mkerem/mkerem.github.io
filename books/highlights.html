@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Highlights Collection - Literary Journey</title>
+    <style>
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #8ecae6;
+            --background-color: #f8f9fa;
+            --card-color: #ffffff;
+            --text-color: #333333;
+            --light-text: #757575;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Playfair Display', 'Georgia', serif;
+        }
+        
+        input, select, button {
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--card-color);
+            box-shadow: var(--box-shadow);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .app-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--primary-color);
+        }
+        
+        nav a.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 3px;
+        }
+        
+        main {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .page-title {
+            margin-bottom: 2rem;
+        }
+        
+        .search-container {
+            background-color: var(--card-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            padding: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .search-input {
+            display: flex;
+            gap: 1rem;
+        }
+        
+        .search-input input {
+            flex-grow: 1;
+            padding: 0.8rem 1.2rem;
+            border: 1px solid #ddd;
+            border-radius: var(--border-radius);
+            font-size: 1rem;
+        }
+        
+        .search-input button {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-weight: 500;
+        }
+        
+        .search-input button:hover {
+            background-color: #1a6ed8;
+        }
+        
+        .filter-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 150px;
+        }
+        
+        .filter-group label {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            margin-bottom: 0.3rem;
+        }
+        
+        .filter-group select {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .highlight-section {
+            margin-bottom: 2rem;
+        }
+        
+        .highlights-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        
+        .highlight-card {
+            background-color: var(--card-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .highlight-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .highlight-header {
+            padding: 1.2rem 1.5rem;
+            background-color: #f0f7ff;
+            border-bottom: 1px solid #e1f0ff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .book-title {
+            font-weight: 600;
+            color: var(--primary-color);
+        }
+        
+        .highlight-content {
+            padding: 1.5rem;
+            border-left: 3px solid var(--primary-color);
+        }
+        
+        .highlight-text {
+            font-style: italic;
+            margin-bottom: 1rem;
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+        
+        .highlight-meta {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+        
+        .highlight-location span {
+            margin-right: 1rem;
+        }
+        
+        .highlight-date {
+            font-size: 0.9rem;
+            color: var(--light-text);
+        }
+        
+        .highlight-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+        }
+        
+        .highlight-tag {
+            background-color: #e1f0ff;
+            color: var(--primary-color);
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            transition: background-color 0.3s, color 0.3s;
+            cursor: pointer;
+        }
+        
+        .highlight-tag:hover {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 2rem;
+            gap: 0.5rem;
+        }
+        
+        .page-link {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background-color: var(--card-color);
+            color: var(--text-color);
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s;
+        }
+        
+        .page-link:hover, .page-link.active {
+            background-color: var(--primary-color);
+            color: white;
+        }
+        
+        .no-results {
+            text-align: center;
+            padding: 4rem 2rem;
+            background-color: var(--card-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+        }
+        
+        .no-results h3 {
+            margin-bottom: 1rem;
+            color: var(--primary-color);
+        }
+        
+        @media (max-width: 768px) {
+            .filter-options {
+                flex-direction: column;
+            }
+            
+            .filter-group {
+                width: 100%;
+            }
+            
+            .highlight-header {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .highlight-meta {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="app-title">
+            <h1>Literary Journey</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html">Books</a></li>
+                    <li><a href="highlights.html" class="active">Highlights</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <div class="page-title">
+            <h2>Highlights Collection</h2>
+            <p>Search and explore all your saved highlights across your library</p>
+        </div>
+        
+        <section class="search-container">
+            <div class="search-input">
+                <input type="text" placeholder="Search for highlights, quotes, or ideas...">
+                <button>Search</button>
+            </div>
+            
+            <div class="filter-options">
+                <div class="filter-group">
+                    <label for="book-filter">Book</label>
+                    <select id="book-filter">
+                        <option value="all">All Books</option>
+                        <option value="atomic-habits">Atomic Habits</option>
+                        <option value="deep-work">Deep Work</option>
+                        <option value="project-hail-mary">Project Hail Mary</option>
+                        <option value="educated">Educated</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="tag-filter">Tag</label>
+                    <select id="tag-filter">
+                        <option value="all">All Tags</option>
+                        <option value="productivity">Productivity</option>
+                        <option value="mindset">Mindset</option>
+                        <option value="habits">Habits</option>
+                        <option value="philosophy">Philosophy</option>
+                        <option value="science">Science</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="year-filter">Year Read</label>
+                    <select id="year-filter">
+                        <option value="all">All Years</option>
+                        <option value="2025">2025</option>
+                        <option value="2024">2024</option>
+                        <option value="2023">2023</option>
+                    </select>
+                </div>
+                
+                <div class="filter-group">
+                    <label for="sort-by">Sort By</label>
+                    <select id="sort-by">
+                        <option value="recent">Most Recent</option>
+                        <option value="oldest">Oldest First</option>
+                        <option value="book-az">Book Title (A-Z)</option>
+                        <option value="book-za">Book Title (Z-A)</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+        
+        <section class="highlight-section">
+            <div class="highlights-container">
+                <div class="highlight-card">
+                    <div class="highlight-header">
+                        <span class="book-title">Atomic Habits</span>
+                        <span class="highlight-date">Saved on March 15, 2023</span>
+                    </div>
+                    <div class="highlight-content">
+                        <p class="highlight-text">"Habits are the compound interest of self-improvement. The same way that money multiplies through compound interest, the effects of your habits multiply as you repeat them."</p>
+                        <div class="highlight-meta">
+                            <div class="highlight-location">
+                                <span>Page 15</span>
+                                <span>Chapter 1</span>
+                            </div>
+                        </div>
+                        <div class="highlight-tags">
+                            <span class="highlight-tag">Compounding</span>
+                            <span class="highlight-tag">Growth</span>
+                            <span class="highlight-tag">Self-improvement</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="highlight-card">
+                    <div class="highlight-header">
+                        <span class="book-title">Deep Work</span>
+                        <span class="highlight-date">Saved on February 3, 2023</span>
+                    </div>
+                    <div class="highlight-content">
+                        <p class="highlight-text">"The ability to perform deep work is becoming increasingly rare at exactly the same time it is becoming increasingly valuable in our economy. As a consequence, the few who cultivate this skill, and then make it the core of their working life, will thrive."</p>
+                        <div class="highlight-meta">
+                            <div class="highlight-location">
+                                <span>Page 42</span>
+                                <span>Chapter 3</span>
+                            </div>
+                        </div>
+                        <div class="highlight-tags">
+                            <span class="highlight-tag">Focus</span>
+                            <span class="highlight-tag">Productivity</span>
+                            <span class="highlight-tag">Career</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="highlight-card">
+                    <div class="highlight-header">
+                        <span class="book-title">Project Hail Mary</span>
+                        <span class="highlight-date">Saved on January 22, 2023</span>
