@@ -1,1 +1,517 @@
-I will have more here soon.
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Detail - Literary Journey</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3a86ff;
+            --secondary-color: #8ecae6;
+            --background-color: #f8f9fa;
+            --card-color: #ffffff;
+            --text-color: #333333;
+            --light-text: #757575;
+            --border-radius: 8px;
+            --box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Playfair Display', 'Georgia', serif;
+        }
+        
+        input, select, button {
+            font-family: 'Nunito', 'Segoe UI', sans-serif;
+        }
+        
+        body {
+            background-color: var(--background-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+        
+        header {
+            background-color: var(--card-color);
+            box-shadow: var(--box-shadow);
+            padding: 1rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .app-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        nav a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        nav a:hover {
+            color: var(--primary-color);
+        }
+        
+        nav a.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            padding-bottom: 3px;
+        }
+        
+        main {
+            max-width: 900px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+        
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            color: var(--light-text);
+            text-decoration: none;
+            margin-bottom: 1.5rem;
+            transition: color 0.3s;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .back-link:hover {
+            color: var(--primary-color);
+        }
+        
+        .back-link::before {
+            content: "←";
+            margin-right: 0.5rem;
+        }
+        
+        .book-detail {
+            background-color: var(--card-color);
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+        
+        /* Book Header */
+        .book-header {
+            padding: 2.5rem;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .book-header h1 {
+            font-size: 2.2rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-color);
+        }
+        
+        .book-author {
+            font-size: 1.3rem;
+            color: var(--light-text);
+            margin-bottom: 1.2rem;
+        }
+        
+        .book-rating {
+            color: #ffc107;
+            font-size: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .genre-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .genre-tag {
+            background-color: var(--secondary-color);
+            color: white;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .book-meta {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2rem;
+        }
+        
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .meta-label {
+            font-size: 0.85rem;
+            color: var(--light-text);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            font-family: 'Nunito', sans-serif;
+            margin-bottom: 0.2rem;
+        }
+        
+        .meta-value {
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+        
+        /* Content Sections */
+        .book-content {
+            padding: 2.5rem;
+        }
+        
+        .book-section {
+            margin-bottom: 3rem;
+        }
+        
+        .book-section:last-child {
+            margin-bottom: 0;
+        }
+        
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: var(--primary-color);
+            position: relative;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 60px;
+            height: 2px;
+            background-color: var(--primary-color);
+        }
+        
+        /* Summary Section */
+        .summary-list {
+            list-style-type: none;
+            padding-left: 1.5rem;
+        }
+        
+        .summary-list li {
+            position: relative;
+            margin-bottom: 1rem;
+            padding-left: 1rem;
+        }
+        
+        .summary-list li::before {
+            content: "•";
+            position: absolute;
+            left: -0.8rem;
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+        
+        /* Highlights Section */
+        .highlight-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.8rem;
+            margin-bottom: 1.8rem;
+        }
+        
+        .highlight-card {
+            background-color: #f0f7ff;
+            border-left: 5px solid var(--primary-color);
+            padding: 1.8rem 1.8rem 1.5rem;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .highlight-text {
+            font-style: italic;
+            line-height: 1.8;
+            font-size: 1.15rem;
+            color: var(--text-color);
+            margin-bottom: 1rem;
+        }
+        
+        .highlight-page {
+            font-size: 0.9rem;
+            color: var(--light-text);
+            font-family: 'Nunito', sans-serif;
+            margin-bottom: 0.8rem;
+        }
+        
+        .highlight-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .highlight-tag {
+            background-color: #e1f0ff;
+            color: var(--primary-color);
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-family: 'Nunito', sans-serif;
+        }
+        
+        .add-highlight {
+            display: inline-block;
+            background-color: var(--primary-color);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border-radius: var(--border-radius);
+            text-decoration: none;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            font-family: 'Nunito', sans-serif;
+            box-shadow: 0 3px 8px rgba(58, 134, 255, 0.3);
+        }
+        
+        .add-highlight:hover {
+            background-color: #1a6ed8;
+        }
+        
+        /* AI Analysis Section */
+        .analysis-container {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+        }
+        
+        .analysis-card {
+            background-color: #fbfbfb;
+            padding: 1.8rem;
+            border-radius: var(--border-radius);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+        }
+        
+        .analysis-title {
+            color: var(--primary-color);
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+        
+        .analysis-list {
+            list-style-type: none;
+        }
+        
+        .analysis-list li {
+            position: relative;
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+        
+        .analysis-list li:last-child {
+            margin-bottom: 0;
+        }
+        
+        .analysis-list li::before {
+            content: "•";
+            color: var(--primary-color);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .book-header {
+                padding: 1.5rem;
+            }
+            
+            .book-content {
+                padding: 1.5rem;
+            }
+            
+            .book-header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .book-meta {
+                gap: 1rem;
+            }
+            
+            .meta-item {
+                min-width: 45%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="app-title">
+            <h1>Literary Journey</h1>
+            <nav>
+                <ul>
+                    <li><a href="#" class="active">Books</a></li>
+                    <li><a href="#">Highlights</a></li>
+                    <li><a href="#">Dashboard</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    
+    <main>
+        <a href="#" class="back-link">Back to Books</a>
+        
+        <div class="book-detail">
+            <!-- Book Header with basic info -->
+            <div class="book-header">
+                <h1>The Pathless Path</h1>
+                <p class="book-author">Paul Millerd</p>
+                
+                <div class="book-rating">★★★★★</div>
+                
+                <div class="genre-tags">
+                    <span class="genre-tag">Personal Development</span>
+                    <span class="genre-tag">Career</span>
+                    <span class="genre-tag">Philosophy</span>
+                </div>
+                
+                <div class="book-meta">
+                    <div class="meta-item">
+                        <span class="meta-label">Read In</span>
+                        <span class="meta-value">2023</span>
+                    </div>
+                    
+                    <div class="meta-item">
+                        <span class="meta-label">Pages</span>
+                        <span class="meta-value">248</span>
+                    </div>
+                    
+                    <div class="meta-item">
+                        <span class="meta-label">Publisher</span>
+                        <span class="meta-value">Self-published</span>
+                    </div>
+                    
+                    <div class="meta-item">
+                        <span class="meta-label">Published</span>
+                        <span class="meta-value">2022</span>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Book Content Sections -->
+            <div class="book-content">
+                <!-- Summary Section -->
+                <section class="book-section">
+                    <h2 class="section-title">My Summary</h2>
+                    <ul class="summary-list">
+                        <li>The Pathless Path is a thought-provoking exploration of alternative ways to live and work beyond the conventional career path. Paul Millerd shares his personal journey of leaving the corporate world to embrace uncertainty and create a different relationship with work.</li>
+                        <li>The book challenges our cultural obsession with productivity and career advancement, suggesting that the traditional path often leads to burnout, emptiness, and disconnection from what truly matters.</li>
+                        <li>Millerd introduces the concept of the "pathless path" as an alternative way of living that embraces uncertainty and discomfort while rejecting society's default expectations. It's about finding personal meaning rather than following established routes.</li>
+                        <li>Through personal stories and philosophical insights, the book offers a framework for rethinking success, exploring concepts like "wu wei" (non-doing), eudaimonia (flourishing), and the importance of wonder in making life changes.</li>
+                        <li>The book has profoundly influenced how I think about career, success, and meaning, encouraging me to question default assumptions and embrace more intentional choices about how I spend my time and energy.</li>
+                    </ul>
+                </section>
+                
+                <!-- Highlights Section -->
+                <section class="book-section">
+                    <h2 class="section-title">Highlights</h2>
+                    <div class="highlight-container">
+                        <div class="highlight-card">
+                            <p class="highlight-text">"The pathless path is an alternative to the default path. It is an embrace of uncertainty and discomfort. It's a call to adventure in a world that tells us to conform. For me, it's also a gentle reminder to laugh when things feel out of control and trust that an uncertain future is not a problem to be solved."</p>
+                            <div class="highlight-page">Page 12</div>
+                            <div class="highlight-tags">
+                                <span class="highlight-tag">Uncertainty</span>
+                                <span class="highlight-tag">Adventure</span>
+                            </div>
+                        </div>
+                        
+                        <div class="highlight-card">
+                            <p class="highlight-text">"Your life is too short and too valuable to fritter away in work. If you don't get out now, you may end up like the frog that is placed in a pot of fresh water on the stove. As the temperature is gradually increased, the frog feels restless and uncomfortable, but not uncomfortable enough to jump out."</p>
+                            <div class="highlight-page">Page 87</div>
+                            <div class="highlight-tags">
+                                <span class="highlight-tag">Work-life</span>
+                                <span class="highlight-tag">Awareness</span>
+                            </div>
+                        </div>
+                        
+                        <div class="highlight-card">
+                            <p class="highlight-text">"In my conversations with people who have made changes in their life, one thing seems to work reliably: wonder. Wonder is the state of being open to the world, its beauty, and potential possibilities. With wonder, the need to cope becomes less important and the discomfort on the current path becomes more noticeable."</p>
+                            <div class="highlight-page">Page 142</div>
+                            <div class="highlight-tags">
+                                <span class="highlight-tag">Wonder</span>
+                                <span class="highlight-tag">Change</span>
+                                <span class="highlight-tag">Possibility</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <a href="#" class="add-highlight">Add New Highlight</a>
+                </section>
+                
+                <!-- AI Analysis Section -->
+                <section class="book-section">
+                    <h2 class="section-title">AI Analysis</h2>
+                    <div class="analysis-container">
+                        <div class="analysis-card">
+                            <h3 class="analysis-title">Main Themes</h3>
+                            <ul class="analysis-list">
+                                <li>Embracing uncertainty as a pathway to personal growth</li>
+                                <li>Challenging conventional definitions of success and career progression</li>
+                                <li>The concept of the "pathless path" as an alternative to default life choices</li>
+                                <li>The tension between conformity and authentic self-expression</li>
+                                <li>Finding meaning through personal exploration rather than external validation</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="analysis-card">
+                            <h3 class="analysis-title">Key Insights</h3>
+                            <ul class="analysis-list">
+                                <li>Wonder and curiosity are essential catalysts for meaningful life change</li>
+                                <li>The concept of "wu wei" (non-doing) as a state of flow and connectedness</li>
+                                <li>Eudaimonia (flourishing) as a more valuable pursuit than mere productivity</li>
+                                <li>The importance of finding "path experts" who are ahead on similar journeys</li>
+                                <li>Creating space for emergence rather than forcing specific outcomes</li>
+                            </ul>
+                        </div>
+                        
+                        <div class="analysis-card">
+                            <h3 class="analysis-title">Patterns in Highlights</h3>
+                            <ul class="analysis-list">
+                                <li>Repeated emphasis on embracing discomfort and uncertainty as growth opportunities</li>
+                                <li>Philosophical references that challenge conventional thinking about work and success</li>
+                                <li>Personal stories used to illustrate abstract concepts about life and meaning</li>
+                                <li>Recurring theme of creating space for personal exploration and discovery</li>
+                                <li>Contrasting the "default path" with alternative ways of living and working</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+    
+    <script>
+        // Just basic scroll behavior for a nicer experience
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
