@@ -18,6 +18,8 @@ export default defineConfig({
     headers: {
       'Cross-Origin-Opener-Policy': 'same-origin',
       'Cross-Origin-Embedder-Policy': 'require-corp'
-    }
-  }
+    },
+    open: '/index-dev.html'
+  },
+  appType: 'mpa'
 });
