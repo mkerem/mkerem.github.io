@@ -44,14 +44,23 @@ class App {
       (quote) => this.onQuoteHover(quote)
     );
 
+    // Track when loading started for minimum display time
+    const loadStartTime = Date.now();
+
     // Load data
     await this.loadData();
 
     // Setup event listeners
     this.setupEventListeners();
 
-    // Hide loading indicator
-    this.loading.classList.add('hidden');
+    // Hide loading indicator after minimum 1.5 seconds
+    const elapsed = Date.now() - loadStartTime;
+    const minDisplayTime = 1500;
+    const remainingTime = Math.max(0, minDisplayTime - elapsed);
+
+    setTimeout(() => {
+      this.loading.classList.add('hidden');
+    }, remainingTime);
 
     // Fade out hint after 5 seconds
     setTimeout(() => {
