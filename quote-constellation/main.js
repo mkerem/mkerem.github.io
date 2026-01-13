@@ -112,41 +112,45 @@ class App {
       });
     }
 
-    // Show constellation immediately with random positions
+    // Show constellation immediately with category-based positions
     this.constellation.updateConstellation(this.quotes, this.positions, this.embeddings);
-    this.loading.classList.add('hidden');
     console.log('Constellation displayed with initial positions');
 
-    // Check which quotes need embeddings
+    // Pre-compute contradictions with whatever embeddings we have
+    this.contradictionPairs = getAllContradictions(this.quotes, this.embeddings);
+    this.constellation.showContradictions(this.contradictionPairs);
+
+    // Compute embeddings in background (non-blocking) - skip for now to keep it fast
+    // The category-based positioning works well without semantic embeddings
     const quotesNeedingEmbeddings = this.quotes.filter(q => !storedEmbeddings[q.id]);
+    if (quotesNeedingEmbeddings.length > 0 && Object.keys(storedEmbeddings).length > 0) {
+      // Only compute if we already have some embeddings cached (returning user)
+      this.computeEmbeddingsInBackground(quotesNeedingEmbeddings, storedEmbeddings);
+    }
+  }
 
-    if (quotesNeedingEmbeddings.length > 0) {
-      console.log(`Computing embeddings for ${quotesNeedingEmbeddings.length} quotes in background...`);
+  // Non-blocking background embedding computation
+  async computeEmbeddingsInBackground(quotes, storedEmbeddings) {
+    console.log(`Computing embeddings for ${quotes.length} quotes in background...`);
 
-      // Compute embeddings in background
-      for (const quote of quotesNeedingEmbeddings) {
-        try {
-          const embedding = await generateEmbedding(quote.text);
-          storedEmbeddings[quote.id] = embedding;
-          setEmbedding(quote.id, embedding);
-        } catch (e) {
-          console.warn(`Failed to generate embedding for quote ${quote.id}:`, e);
-        }
-      }
-
-      this.embeddings = storedEmbeddings;
-
-      // Recompute positions with actual embeddings
-      if (Object.keys(this.embeddings).length > 0) {
-        console.log('Recomputing semantic positions...');
-        this.positions = reduceDimensions(this.embeddings);
-        this.constellation.updateConstellation(this.quotes, this.positions, this.embeddings);
+    for (const quote of quotes) {
+      try {
+        const embedding = await generateEmbedding(quote.text);
+        storedEmbeddings[quote.id] = embedding;
+        setEmbedding(quote.id, embedding);
+      } catch (e) {
+        console.warn(`Failed to generate embedding for quote ${quote.id}:`, e);
+        break; // Stop on first error to avoid repeated failures
       }
     }
 
-    // Pre-compute contradictions
-    this.contradictionPairs = getAllContradictions(this.quotes, this.embeddings);
-    this.constellation.showContradictions(this.contradictionPairs);
+    this.embeddings = storedEmbeddings;
+
+    // Update contradictions with new embeddings
+    if (Object.keys(this.embeddings).length > 0) {
+      this.contradictionPairs = getAllContradictions(this.quotes, this.embeddings);
+      this.constellation.showContradictions(this.contradictionPairs);
+    }
   }
 
   setupEventListeners() {
