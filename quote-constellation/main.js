@@ -10,17 +10,6 @@ import {
 } from './embeddings.js';
 import { categories, categorizeQuote, getPositionInCluster, quoteCategoryMap } from './categories.js';
 
-// Try to load pre-computed embeddings
-let precomputedData = null;
-try {
-  const response = await fetch('./data/precomputed.json');
-  if (response.ok) {
-    precomputedData = await response.json();
-  }
-} catch (e) {
-  console.log('No pre-computed data found, will compute in browser');
-}
-
 class App {
   constructor() {
     this.constellation = null;
@@ -75,21 +64,8 @@ class App {
     this.quotes = loadQuotes();
     console.log(`Loaded ${this.quotes.length} quotes`);
 
-    // Try to load pre-computed embeddings first
-    let storedEmbeddings = loadEmbeddings();
-
-    // Check if we have pre-computed data with actual embeddings
-    if (precomputedData?.embeddings && Object.keys(precomputedData.embeddings).length > 0) {
-      // Merge pre-computed with stored
-      for (const [id, embedding] of Object.entries(precomputedData.embeddings)) {
-        if (!storedEmbeddings[id]) {
-          storedEmbeddings[id] = embedding;
-        }
-      }
-      saveEmbeddings(storedEmbeddings);
-    }
-
-    this.embeddings = storedEmbeddings;
+    // Load embeddings from localStorage
+    this.embeddings = loadEmbeddings();
 
     // Categorize quotes and position them in themed clusters
     const categoryQuotes = {}; // categoryId -> [quotes]
@@ -122,29 +98,27 @@ class App {
 
     // Compute embeddings in background (non-blocking) - skip for now to keep it fast
     // The category-based positioning works well without semantic embeddings
-    const quotesNeedingEmbeddings = this.quotes.filter(q => !storedEmbeddings[q.id]);
-    if (quotesNeedingEmbeddings.length > 0 && Object.keys(storedEmbeddings).length > 0) {
+    const quotesNeedingEmbeddings = this.quotes.filter(q => !this.embeddings[q.id]);
+    if (quotesNeedingEmbeddings.length > 0 && Object.keys(this.embeddings).length > 0) {
       // Only compute if we already have some embeddings cached (returning user)
-      this.computeEmbeddingsInBackground(quotesNeedingEmbeddings, storedEmbeddings);
+      this.computeEmbeddingsInBackground(quotesNeedingEmbeddings);
     }
   }
 
   // Non-blocking background embedding computation
-  async computeEmbeddingsInBackground(quotes, storedEmbeddings) {
+  async computeEmbeddingsInBackground(quotes) {
     console.log(`Computing embeddings for ${quotes.length} quotes in background...`);
 
     for (const quote of quotes) {
       try {
         const embedding = await generateEmbedding(quote.text);
-        storedEmbeddings[quote.id] = embedding;
+        this.embeddings[quote.id] = embedding;
         setEmbedding(quote.id, embedding);
       } catch (e) {
         console.warn(`Failed to generate embedding for quote ${quote.id}:`, e);
         break; // Stop on first error to avoid repeated failures
       }
     }
-
-    this.embeddings = storedEmbeddings;
 
     // Update contradictions with new embeddings
     if (Object.keys(this.embeddings).length > 0) {
