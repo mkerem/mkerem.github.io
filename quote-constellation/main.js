@@ -209,29 +209,14 @@ class App {
     this.quoteText.textContent = quote.text;
     this.quoteAttribution.textContent = quote.attribution || '';
     this.quoteOverlay.classList.remove('hidden');
-
-    // Show connections to nearest neighbors
-    const neighbors = findNearestNeighbors(quote.id, this.quotes, this.embeddings, 5);
-    this.constellation.showConnections(quote.id, neighbors);
   }
 
   onQuoteHover(quote) {
-    if (quote && !this.quoteOverlay.classList.contains('hidden')) {
-      return; // Don't update hover while overlay is open
-    }
-
-    if (quote) {
-      // Show connection lines on hover
-      const neighbors = findNearestNeighbors(quote.id, this.quotes, this.embeddings, 3);
-      this.constellation.showConnections(quote.id, neighbors);
-    } else {
-      this.constellation.clearConnectionLines();
-    }
+    // Hover highlighting is handled by the constellation
   }
 
   closeQuoteOverlay() {
     this.quoteOverlay.classList.add('hidden');
-    this.constellation.clearConnectionLines();
   }
 
   openAddQuoteModal() {

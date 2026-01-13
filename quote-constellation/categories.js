@@ -3,49 +3,49 @@
 
 export const categories = {
   wisdom: {
-    name: "Wisdom & Knowledge",
+    name: "Wisdom",
     color: 0x88aaff,
     position: { x: -40, y: 30, z: 0 },
     keywords: ["knowledge", "wisdom", "learn", "ignorance", "understand", "think", "mind", "brain", "clever", "smart", "education"]
   },
   courage: {
-    name: "Courage & Action",
+    name: "Courage",
     color: 0xffaa66,
     position: { x: 40, y: 30, z: 0 },
     keywords: ["courage", "action", "brave", "fear", "do", "act", "change", "progress", "discipline", "freedom", "aggressive"]
   },
   relationships: {
-    name: "Relationships & Community",
+    name: "Connection",
     color: 0xff88aa,
     position: { x: 0, y: -40, z: 30 },
     keywords: ["together", "people", "love", "friend", "family", "share", "joy", "sorrow", "kindness", "help", "talk"]
   },
   perspective: {
-    name: "Perspective & Reality",
+    name: "Perspective",
     color: 0x88ffaa,
     position: { x: 0, y: 40, z: -30 },
     keywords: ["reality", "illusion", "view", "see", "perceive", "judge", "estimate", "think", "believe", "world", "universe"]
   },
   simplicity: {
-    name: "Simplicity & Focus",
+    name: "Focus",
     color: 0xaaffff,
     position: { x: -30, y: -30, z: -30 },
     keywords: ["simple", "focus", "one", "eliminate", "decrease", "moderation", "busy", "time", "chase", "rabbit"]
   },
   resilience: {
-    name: "Resilience & Adaptation",
+    name: "Resilience",
     color: 0xffaaff,
     position: { x: 30, y: -30, z: 30 },
     keywords: ["water", "adapt", "change", "plan", "punch", "pain", "suffer", "accept", "serenity", "river", "flow"]
   },
   self: {
-    name: "Self & Identity",
+    name: "Identity",
     color: 0xffffaa,
     position: { x: -40, y: 0, z: 40 },
     keywords: ["self", "myself", "yourself", "identity", "label", "who", "am", "solitude", "loneliness", "wonder"]
   },
   creativity: {
-    name: "Creativity & Ambition",
+    name: "Creativity",
     color: 0xaaaaff,
     position: { x: 40, y: 0, z: -40 },
     keywords: ["create", "build", "great", "wonderful", "ambition", "dream", "flower", "grow", "art", "beauty", "normalcy"]

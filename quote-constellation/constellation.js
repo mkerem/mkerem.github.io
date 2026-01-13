@@ -127,40 +127,48 @@ export class Constellation {
   }
 
   // Create text label for a category
-  createCategoryLabel(categoryId, category) {
+  // count = number of quotes in this category, maxCount = largest category size
+  createCategoryLabel(categoryId, category, count = 5, maxCount = 10) {
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d');
     canvas.width = 512;
     canvas.height = 128;
 
+    // Calculate size and brightness based on count
+    // Normalize: smallest gets ~0.4, largest gets 1.0
+    const normalizedSize = 0.4 + (count / maxCount) * 0.6;
+    const fontSize = Math.floor(28 + normalizedSize * 20); // 28-48px
+    const brightness = Math.floor(150 + normalizedSize * 105); // 150-255
+
     // Draw text
     ctx.fillStyle = 'transparent';
     ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-    ctx.font = 'bold 36px "Crimson Text", Georgia, serif';
+    ctx.font = `${fontSize}px "Crimson Text", Georgia, serif`;
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
 
-    // Category color
-    const color = new THREE.Color(category.color);
-    ctx.fillStyle = `rgba(${Math.floor(color.r * 255)}, ${Math.floor(color.g * 255)}, ${Math.floor(color.b * 255)}, 0.8)`;
+    // White/gray based on cluster size (bigger = brighter)
+    ctx.fillStyle = `rgba(${brightness}, ${brightness}, ${brightness}, 0.9)`;
     ctx.fillText(category.name, canvas.width / 2, canvas.height / 2);
 
     const texture = new THREE.CanvasTexture(canvas);
     const spriteMaterial = new THREE.SpriteMaterial({
       map: texture,
       transparent: true,
-      opacity: 0.7
+      opacity: 0.5 + normalizedSize * 0.4 // 0.5-0.9 opacity
     });
 
     const sprite = new THREE.Sprite(spriteMaterial);
-    sprite.scale.set(30, 7.5, 1);
+    // Scale based on size
+    const scale = 25 + normalizedSize * 15; // 25-40
+    sprite.scale.set(scale, scale * 0.25, 1);
     sprite.position.set(
       category.position.x,
       category.position.y + 25,
       category.position.z
     );
-    sprite.userData = { categoryId, category };
+    sprite.userData = { categoryId, category, count };
 
     return sprite;
   }
@@ -203,6 +211,14 @@ export class Constellation {
     });
     this.categoryLabels.clear();
 
+    // Count quotes per category
+    const categoryCounts = {};
+    for (const quote of quotes) {
+      const cat = quote.category || 'wisdom';
+      categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+    }
+    const maxCount = Math.max(...Object.values(categoryCounts), 1);
+
     // Create stars for each quote
     for (const quote of quotes) {
       const position = positions[quote.id];
@@ -213,9 +229,10 @@ export class Constellation {
       this.stars.set(quote.id, star);
     }
 
-    // Create category labels
+    // Create category labels with size based on quote count
     for (const [categoryId, category] of Object.entries(categories)) {
-      const label = this.createCategoryLabel(categoryId, category);
+      const count = categoryCounts[categoryId] || 0;
+      const label = this.createCategoryLabel(categoryId, category, count, maxCount);
       this.scene.add(label);
       this.categoryLabels.set(categoryId, label);
     }
