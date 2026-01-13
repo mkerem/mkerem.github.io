@@ -21,6 +21,7 @@ export class Constellation {
 
     this.hoveredStar = null;
     this.selectedStar = null;
+    this.focusedCategory = null; // Currently focused category
 
     this.init();
   }
@@ -66,9 +67,11 @@ export class Constellation {
     this.starsGroup = new THREE.Group();
     this.linesGroup = new THREE.Group();
     this.contradictionGroup = new THREE.Group();
+    this.labelsGroup = new THREE.Group();
     this.scene.add(this.starsGroup);
     this.scene.add(this.linesGroup);
     this.scene.add(this.contradictionGroup);
+    this.scene.add(this.labelsGroup);
     this.contradictionGroup.visible = false;
 
     // Event listeners
@@ -207,9 +210,12 @@ export class Constellation {
 
     // Clear existing category labels
     this.categoryLabels.forEach((label) => {
-      this.scene.remove(label);
+      this.labelsGroup.remove(label);
     });
     this.categoryLabels.clear();
+
+    // Reset focused category
+    this.focusedCategory = null;
 
     // Count quotes per category
     const categoryCounts = {};
@@ -233,7 +239,7 @@ export class Constellation {
     for (const [categoryId, category] of Object.entries(categories)) {
       const count = categoryCounts[categoryId] || 0;
       const label = this.createCategoryLabel(categoryId, category, count, maxCount);
-      this.scene.add(label);
+      this.labelsGroup.add(label);
       this.categoryLabels.set(categoryId, label);
     }
 
@@ -440,10 +446,155 @@ export class Constellation {
     return null;
   }
 
+  // Get category label at mouse position
+  getCategoryAtMouse() {
+    let closestCategory = null;
+    let closestDistance = Infinity;
+
+    this.categoryLabels.forEach((label, categoryId) => {
+      const labelPos = label.position.clone();
+
+      // Project label position to screen space (NDC: -1 to 1)
+      const screenPos = labelPos.clone().project(this.camera);
+
+      // Skip if behind camera
+      if (screenPos.z > 1) return;
+
+      // Calculate distance in NDC space
+      const dx = screenPos.x - this.mouse.x;
+      const dy = screenPos.y - this.mouse.y;
+      const dist = Math.sqrt(dx * dx + dy * dy);
+
+      // Click range - generous for better UX
+      const clickRange = 0.25;
+
+      if (dist < clickRange && dist < closestDistance) {
+        closestDistance = dist;
+        closestCategory = categoryId;
+      }
+    });
+
+    return closestCategory;
+  }
+
+  // Focus on a category - highlight its quotes and zoom in
+  focusOnCategory(categoryId) {
+    const category = categories[categoryId];
+    if (!category) return;
+
+    // If clicking same category, unfocus
+    if (this.focusedCategory === categoryId) {
+      this.unfocusCategory();
+      return;
+    }
+
+    this.focusedCategory = categoryId;
+
+    // Update star visibility - highlight matching, dim others
+    this.stars.forEach((star, quoteId) => {
+      const quote = star.userData.quote;
+      const isInCategory = quote && quote.category === categoryId;
+
+      star.children.forEach((child) => {
+        if (child.material) {
+          if (isInCategory) {
+            // Highlight: bright and larger
+            child.material.opacity = 1;
+            star.scale.set(1.5, 1.5, 1.5);
+          } else {
+            // Dim: faded and smaller
+            child.material.opacity = 0.15;
+            star.scale.set(0.7, 0.7, 0.7);
+          }
+        }
+      });
+    });
+
+    // Dim other category labels
+    this.categoryLabels.forEach((label, catId) => {
+      if (catId === categoryId) {
+        label.material.opacity = 1;
+      } else {
+        label.material.opacity = 0.2;
+      }
+    });
+
+    // Zoom camera to category center
+    const targetPosition = new THREE.Vector3(
+      category.position.x,
+      category.position.y,
+      category.position.z
+    );
+
+    const startTarget = this.controls.target.clone();
+    const startCamPos = this.camera.position.clone();
+
+    // Calculate new camera position (closer to cluster)
+    const direction = new THREE.Vector3().subVectors(startCamPos, startTarget).normalize();
+    const newCamPos = targetPosition.clone().add(direction.multiplyScalar(50));
+
+    const startTime = this.clock.getElapsedTime();
+    const duration = 0.8;
+
+    const animateZoom = () => {
+      const elapsed = this.clock.getElapsedTime() - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+
+      // Smooth easing
+      const eased = 1 - Math.pow(1 - progress, 3);
+
+      this.controls.target.lerpVectors(startTarget, targetPosition, eased);
+      this.camera.position.lerpVectors(startCamPos, newCamPos, eased);
+
+      if (progress < 1) {
+        requestAnimationFrame(animateZoom);
+      }
+    };
+
+    animateZoom();
+  }
+
+  // Unfocus category - restore all stars
+  unfocusCategory() {
+    this.focusedCategory = null;
+
+    // Restore all stars
+    this.stars.forEach((star) => {
+      star.scale.set(1, 1, 1);
+      star.children.forEach((child) => {
+        if (child.material) {
+          // Restore original opacity based on quote length
+          const quote = star.userData.quote;
+          const brightness = Math.min(0.5 + (quote?.text?.length || 100) / 500, 1);
+          if (child instanceof THREE.Sprite) {
+            child.material.opacity = 0.6 * brightness;
+          } else {
+            child.material.opacity = 0.9;
+          }
+        }
+      });
+    });
+
+    // Restore all labels
+    this.categoryLabels.forEach((label, catId) => {
+      const count = label.userData.count || 5;
+      const maxCount = Math.max(...Array.from(this.categoryLabels.values()).map(l => l.userData.count || 5), 1);
+      const normalizedSize = 0.4 + (count / maxCount) * 0.6;
+      label.material.opacity = 0.5 + normalizedSize * 0.4;
+    });
+  }
+
   // Event handlers
   onMouseMove(event) {
     this.mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     this.mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+
+    // Check for category label hover
+    const categoryId = this.getCategoryAtMouse();
+    if (categoryId) {
+      this.container.style.cursor = 'pointer';
+      return;
+    }
 
     const quote = this.getQuoteAtMouse();
 
@@ -462,14 +613,35 @@ export class Constellation {
       this.hoveredStar = null;
       this.onQuoteHover?.(null);
       this.container.style.cursor = 'grab';
+    } else if (!quote) {
+      this.container.style.cursor = 'grab';
     }
   }
 
   onClick(event) {
+    // Check for category label click first
+    const categoryId = this.getCategoryAtMouse();
+    if (categoryId) {
+      this.focusOnCategory(categoryId);
+      return;
+    }
+
+    // Check for quote click
     const quote = this.getQuoteAtMouse();
     if (quote) {
-      this.focusOnStar(quote.id);
-      this.onQuoteSelect?.(quote);
+      // If we're focused on a category and click a quote in it, show the quote
+      if (this.focusedCategory && quote.category === this.focusedCategory) {
+        this.onQuoteSelect?.(quote);
+      } else if (!this.focusedCategory) {
+        this.focusOnStar(quote.id);
+        this.onQuoteSelect?.(quote);
+      }
+      return;
+    }
+
+    // Click on empty space - unfocus if focused
+    if (this.focusedCategory) {
+      this.unfocusCategory();
     }
   }
 
