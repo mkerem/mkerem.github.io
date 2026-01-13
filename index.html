@@ -3,140 +3,187 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meeks' Portfolio</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+    <title>mkerem</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Text:ital@1&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --light-blue: #a5d8ff;
-            --mint-green: #96f2d7;
-            --dark-blue: #1971c2;
-            --text: #333333;
-            --background: #ffffff;
-        }
-        
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
-        
+
         body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--background);
-            color: var(--text);
+            font-family: 'Crimson Text', Georgia, serif;
+            background: #0a0a0a;
+            color: #888;
             min-height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
             justify-content: center;
-            line-height: 1.6;
+            overflow: hidden;
+            cursor: crosshair;
         }
-        
+
         .container {
-            max-width: 800px;
             text-align: center;
-            padding: 3rem 2rem;
-            background: linear-gradient(135deg, var(--light-blue) 0%, var(--mint-green) 100%);
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 2;
         }
-        
-        h1 {
-            font-family: 'Montserrat', sans-serif;
-            font-weight: 600;
-            color: var(--dark-blue);
-            margin-bottom: 1.5rem;
-            font-size: 2.5rem;
+
+        .text {
+            font-size: clamp(1.5rem, 5vw, 2.5rem);
+            font-style: italic;
+            letter-spacing: 0.15em;
+            transition: all 0.5s ease;
+            position: relative;
         }
-        
-        p {
-            font-size: 1.1rem;
-            margin-bottom: 1.5rem;
-            color: var(--text);
-        }
-        
-        .projects {
-            margin-top: 2rem;
-        }
-        
-        .project-card {
-            background-color: rgba(255, 255, 255, 0.8);
-            padding: 1.5rem;
-            border-radius: 8px;
-            transition: transform 0.2s ease, box-shadow 0.2s ease;
-            margin-bottom: 1rem;
-        }
-        
-        .project-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-        }
-        
-        a {
+
+        .text span {
             display: inline-block;
-            text-decoration: none;
-            color: var(--dark-blue);
-            font-weight: 500;
-            transition: color 0.2s ease;
+            transition: transform 0.3s ease, opacity 0.3s ease;
         }
-        
-        a:hover {
-            color: #1257a5;
+
+        .text:hover {
+            color: #bbb;
+            letter-spacing: 0.25em;
         }
-        
-        .project-title {
-            font-weight: 600;
-            font-size: 1.3rem;
-            margin-bottom: 0.5rem;
+
+        /* Floating particles */
+        .particle {
+            position: fixed;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
         }
-        
-        .footer {
-            margin-top: 3rem;
-            font-size: 0.9rem;
-            color: var(--dark-blue);
+
+        /* Cursor glow */
+        .glow {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255,255,255,0.03) 0%, transparent 70%);
+            pointer-events: none;
+            transform: translate(-50%, -50%);
+            z-index: 1;
+            transition: opacity 0.3s ease;
         }
-        /* Additional mobile responsiveness */
-        @media (max-width: 480px) {
-            .container {
-                padding: 2rem 1rem;
-                margin: 0 15px;
-            }
-            
-            h1 {
-                font-size: 2rem;
-            }
-            
-            p {
-                font-size: 1rem;
-            }
-            
-            .project-title {
-                font-size: 1.1rem;
-            }
+
+        /* Subtle noise texture */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            z-index: 0;
         }
     </style>
 </head>
 <body>
+    <div class="glow" id="glow"></div>
     <div class="container">
-        <h1>Meeks' Portfolio</h1>
-        <p>Welcome to my project collection</p>
-        
-        <div class="projects">
-            <div class="project-card">
-                <div class="project-title">40 Poems for Dacia's 40th</div>
-                <p>A collection of poems celebrating a special birthday.</p>
-                <a href="/40-poems">View Project →</a>
-            </div>
-            <div class="project-card">
-                <div class="project-title">Book Tracker</div>
-                <p>Summaries, highlights, and thoughts on books I've read.</p>
-                <a href="/books">View Project →</a>
-            </div>
-        </div>
-        
-        <div class="footer">
-            © 2025 • Built with ❤️
-        </div>
+        <div class="text" id="text">work in progress...</div>
     </div>
+
+    <script>
+        // Cursor glow effect
+        const glow = document.getElementById('glow');
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let glowX = mouseX;
+        let glowY = mouseY;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateGlow() {
+            glowX += (mouseX - glowX) * 0.1;
+            glowY += (mouseY - glowY) * 0.1;
+            glow.style.left = glowX + 'px';
+            glow.style.top = glowY + 'px';
+            requestAnimationFrame(animateGlow);
+        }
+        animateGlow();
+
+        // Create floating particles
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * window.innerWidth + 'px';
+            particle.style.top = window.innerHeight + 10 + 'px';
+            particle.style.opacity = Math.random() * 0.5 + 0.1;
+            document.body.appendChild(particle);
+
+            const duration = Math.random() * 10000 + 10000;
+            const drift = (Math.random() - 0.5) * 200;
+
+            particle.animate([
+                { transform: 'translateY(0) translateX(0)', opacity: 0 },
+                { opacity: particle.style.opacity, offset: 0.1 },
+                { transform: `translateY(-${window.innerHeight + 50}px) translateX(${drift}px)`, opacity: 0 }
+            ], {
+                duration: duration,
+                easing: 'linear'
+            }).onfinish = () => {
+                particle.remove();
+            };
+        }
+
+        // Spawn particles periodically
+        setInterval(createParticle, 500);
+
+        // Create initial particles
+        for (let i = 0; i < 15; i++) {
+            setTimeout(createParticle, i * 200);
+        }
+
+        // Letter hover effect
+        const text = document.getElementById('text');
+        const originalText = text.textContent;
+        text.innerHTML = originalText.split('').map(char =>
+            char === ' ' ? ' ' : `<span>${char}</span>`
+        ).join('');
+
+        const spans = text.querySelectorAll('span');
+        text.addEventListener('mousemove', (e) => {
+            const rect = text.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+
+            spans.forEach((span, i) => {
+                const spanRect = span.getBoundingClientRect();
+                const spanX = spanRect.left + spanRect.width / 2 - rect.left;
+                const distance = Math.abs(x - spanX);
+                const maxDistance = 100;
+
+                if (distance < maxDistance) {
+                    const intensity = 1 - (distance / maxDistance);
+                    span.style.transform = `translateY(${-intensity * 8}px)`;
+                    span.style.opacity = 0.6 + intensity * 0.4;
+                } else {
+                    span.style.transform = 'translateY(0)';
+                    span.style.opacity = 1;
+                }
+            });
+        });
+
+        text.addEventListener('mouseleave', () => {
+            spans.forEach(span => {
+                span.style.transform = 'translateY(0)';
+                span.style.opacity = 1;
+            });
+        });
+    </script>
 </body>
 </html>
