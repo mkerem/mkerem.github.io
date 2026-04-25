@@ -32,6 +32,7 @@ class App {
     this.addQuoteModal = document.getElementById('add-quote-modal');
     this.quoteInput = document.getElementById('quote-input');
     this.attributionInput = document.getElementById('attribution-input');
+    this.saveQuoteButton = document.getElementById('save-quote-button');
     this.contradictionToggle = document.getElementById('contradiction-toggle');
     this.editHint = document.getElementById('quote-edit-hint');
     this.addQuoteHint = document.getElementById('add-quote-hint');
@@ -143,6 +144,8 @@ class App {
 
     // Quote input handlers
     this.quoteInput.addEventListener('keydown', (e) => this.onQuoteInputKeyDown(e));
+    this.attributionInput.addEventListener('keydown', (e) => this.onQuoteInputKeyDown(e));
+    this.saveQuoteButton.addEventListener('click', () => this.submitNewQuote());
 
     // Contradiction toggle
     this.contradictionToggle.addEventListener('click', () => this.toggleContradictionMode());
@@ -182,7 +185,11 @@ class App {
   }
 
   onQuoteInputKeyDown(e) {
-    if (e.key === 'Enter' && !e.shiftKey) {
+    const isAttributionInput = e.target === this.attributionInput;
+    const shouldSubmitFromTextarea = e.target === this.quoteInput && e.key === 'Enter' && !e.shiftKey;
+    const shouldSubmitFromAttribution = isAttributionInput && e.key === 'Enter';
+
+    if (shouldSubmitFromTextarea || shouldSubmitFromAttribution) {
       e.preventDefault();
       this.submitNewQuote();
     } else if (e.key === 'Escape') {
