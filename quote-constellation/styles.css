@@ -110,6 +110,17 @@ body:active {
   content: '';
 }
 
+#quote-edit-hint {
+  margin-top: 1rem;
+  font-size: 0.85rem;
+  color: #666;
+  letter-spacing: 0.04em;
+}
+
+#quote-edit-hint.hidden {
+  display: none;
+}
+
 /* Add quote modal */
 #add-quote-modal {
   position: absolute;
