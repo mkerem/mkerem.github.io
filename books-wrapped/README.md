@@ -10,6 +10,12 @@ npm start
 
 Open `http://localhost:8787`.
 
+## One-command dev run (from repo root)
+
+```bash
+./books-wrapped/dev.sh
+```
+
 ## Environment variables
 
 - `AIRTABLE_PAT` Airtable Personal Access Token
