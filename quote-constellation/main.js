@@ -37,6 +37,7 @@ class App {
     this.editHint = document.getElementById('quote-edit-hint');
     this.addQuoteHint = document.getElementById('add-quote-hint');
     this.hint = document.getElementById('hint');
+    this.statusToast = document.getElementById('status-toast');
     this.loading = document.getElementById('loading');
 
     // Initialize constellation
@@ -235,6 +236,16 @@ class App {
     this.addQuoteModal.classList.add('hidden');
   }
 
+  showStatusMessage(message, duration = 3200) {
+    this.statusToast.textContent = message;
+    this.statusToast.classList.remove('hidden');
+
+    clearTimeout(this.statusToastTimeout);
+    this.statusToastTimeout = setTimeout(() => {
+      this.statusToast.classList.add('hidden');
+    }, duration);
+  }
+
   recalculatePositions() {
     const categoryQuotes = {};
     this.positions = {};
@@ -291,6 +302,11 @@ class App {
 
       this.recalculatePositions();
       this.constellation.updateConstellation(this.quotes, this.positions, this.embeddings);
+
+      const category = categories[activeQuote.category];
+      const categoryName = category ? category.name : 'Uncategorized';
+      const actionVerb = isEditing ? 'updated in' : 'landed in';
+      this.showStatusMessage(`✨ Your quote ${actionVerb} “${categoryName}.”`);
 
       // Try to generate embedding in background (for semantic features)
       try {

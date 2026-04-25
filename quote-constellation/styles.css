@@ -273,6 +273,29 @@ body:active {
   opacity: 0;
 }
 
+#status-toast {
+  position: absolute;
+  left: 50%;
+  bottom: 4.75rem;
+  transform: translateX(-50%);
+  z-index: 12;
+  max-width: min(90vw, 640px);
+  padding: 0.7rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(20, 20, 20, 0.92);
+  color: #d6d6d6;
+  font-size: 0.95rem;
+  text-align: center;
+  opacity: 1;
+  transition: opacity 0.35s ease;
+}
+
+#status-toast.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* Loading indicator - full screen black overlay */
 #loading {
   position: absolute;
