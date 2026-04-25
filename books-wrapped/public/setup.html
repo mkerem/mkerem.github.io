@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Setup • Books Wrapped</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1>Setup</h1>
+    <p class="muted">Connect Airtable + tell us your vibe.</p>
+
+    <form id="setup-form" class="form-grid card">
+      <label>Base ID<input name="baseId" placeholder="app..." /></label>
+      <label>Table Name<input name="tableName" placeholder="Books" /></label>
+      <label>View Name<input name="viewName" placeholder="Grid view" /></label>
+      <label>Status Field<input name="statusField" placeholder="Status" /></label>
+      <label>Title Field<input name="titleField" placeholder="Title" /></label>
+      <label>Author Field<input name="authorField" placeholder="Author" /></label>
+      <label>Read Value<input name="readValue" placeholder="Read" /></label>
+      <label>Did Not Read Value<input name="unreadValue" placeholder="Did Not Read" /></label>
+      <label>Age<input name="age" type="number" min="5" max="120" placeholder="29" /></label>
+      <label>Tone<input name="tone" placeholder="playful, witty, poetic" value="playful" /></label>
+      <label>Personality Notes<textarea name="personalityNotes" placeholder="e.g., ambitious but distractible, loves buying nonfiction"></textarea></label>
+
+      <div style="display:flex; gap:.7rem; flex-wrap:wrap;">
+        <button type="submit">Generate Wrapped</button>
+        <a href="/"><button type="button" class="secondary">Back</button></a>
+      </div>
+    </form>
+
+    <p id="status" class="muted"></p>
+  </main>
+
+  <script type="module">
+    const form = document.querySelector('#setup-form');
+    const statusEl = document.querySelector('#status');
+
+    const defaultsResp = await fetch('/api/config');
+    const defaults = (await defaultsResp.json()).defaults;
+    Object.entries(defaults).forEach(([key, val]) => {
+      const el = form.elements.namedItem(key);
+      if (el && !el.value) el.value = val || '';
+    });
+
+    form.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      statusEl.textContent = 'Fetching books from Airtable…';
+      const values = Object.fromEntries(new FormData(form).entries());
+
+      const qs = new URLSearchParams(values).toString();
+      const booksResp = await fetch(`/api/books?${qs}`);
+      const booksData = await booksResp.json();
+
+      if (!booksResp.ok) {
+        statusEl.textContent = booksData.error || 'Could not fetch books.';
+        return;
+      }
+
+      statusEl.textContent = `Analyzing ${booksData.totals.read} read and ${booksData.totals.unread} unread books…`;
+      const wrappedResp = await fetch('/api/generate-wrapped', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          readBooks: booksData.readBooks,
+          unreadBooks: booksData.unreadBooks,
+          age: values.age,
+          tone: values.tone,
+          personalityNotes: values.personalityNotes
+        })
+      });
+
+      const wrappedData = await wrappedResp.json();
+      sessionStorage.setItem('booksWrappedResult', JSON.stringify({ ...wrappedData, booksData, profile: values }));
+      window.location.href = '/wrapped';
+    });
+  </script>
+</body>
+</html>

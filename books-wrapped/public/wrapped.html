@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Your Wrapped • Books Wrapped</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <main class="container">
+    <h1 id="headline">Your Wrapped</h1>
+    <p id="meta" class="muted"></p>
+
+    <section class="cards-wrap">
+      <div class="swipe-stage">
+        <article id="card" class="card swipe-card"></article>
+      </div>
+      <div class="nav">
+        <button id="prev" class="secondary" type="button">← Prev</button>
+        <button id="next" type="button">Next →</button>
+        <span id="progress" class="progress"></span>
+      </div>
+    </section>
+
+    <section class="summary-box">
+      <h3>Shareable summary</h3>
+      <p id="summary"></p>
+      <div style="display:flex;gap:.5rem;flex-wrap:wrap;">
+        <button id="share">Share</button>
+        <button id="copy" class="secondary">Copy summary</button>
+      </div>
+    </section>
+  </main>
+
+  <script type="module">
+    const raw = sessionStorage.getItem('booksWrappedResult');
+    if (!raw) window.location.href = '/setup';
+
+    const payload = JSON.parse(raw);
+    const { wrapped, booksData, source } = payload;
+
+    const headline = document.querySelector('#headline');
+    const meta = document.querySelector('#meta');
+    const summary = document.querySelector('#summary');
+    const cardEl = document.querySelector('#card');
+    const progress = document.querySelector('#progress');
+
+    headline.textContent = wrapped.headline || 'Books Wrapped';
+    meta.textContent = `${wrapped.archetype || 'Reader'} · ${booksData.totals.read} read · ${booksData.totals.unread} possible selves · via ${source}`;
+    summary.textContent = wrapped.summary || '';
+
+    const cards = wrapped.cards || [];
+    let idx = 0;
+
+    function render() {
+      const card = cards[idx] || { title: 'No cards', body: 'Try generating again.', tag: 'oops' };
+      cardEl.innerHTML = `<span class="tag">${card.tag}</span><h2>${card.title}</h2><p>${card.body}</p>`;
+      progress.textContent = `${idx + 1} / ${cards.length}`;
+    }
+
+    document.querySelector('#prev').onclick = () => { idx = Math.max(0, idx - 1); render(); };
+    document.querySelector('#next').onclick = () => { idx = Math.min(cards.length - 1, idx + 1); render(); };
+
+    let startX = null;
+    cardEl.addEventListener('pointerdown', (e) => { startX = e.clientX; });
+    cardEl.addEventListener('pointerup', (e) => {
+      if (startX === null) return;
+      const delta = e.clientX - startX;
+      if (delta < -45 && idx < cards.length - 1) idx += 1;
+      if (delta > 45 && idx > 0) idx -= 1;
+      startX = null;
+      render();
+    });
+
+    document.querySelector('#copy').onclick = async () => {
+      await navigator.clipboard.writeText(`${wrapped.headline}\n${summary.textContent}`);
+      alert('Summary copied ✅');
+    };
+
+    document.querySelector('#share').onclick = async () => {
+      const text = `${wrapped.headline} — ${summary.textContent}`;
+      if (navigator.share) {
+        await navigator.share({ title: 'My Books Wrapped', text });
+      } else {
+        await navigator.clipboard.writeText(text);
+        alert('Web Share unavailable, copied to clipboard instead.');
+      }
+    };
+
+    render();
+  </script>
+</body>
+</html>
